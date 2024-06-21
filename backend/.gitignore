@@ -12,6 +12,7 @@
 /build
 /Gmail
 /jsonLogs
+/config/config.env
 Data.js
 
 # misc
@@ -20,6 +21,7 @@ Data.js
 .env.development.local
 .env.test.local
 .env.production.local
+package.lock.json
 
 npm-debug.log*
 yarn-debug.log*
