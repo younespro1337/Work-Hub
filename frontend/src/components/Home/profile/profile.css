@@ -1,0 +1,149 @@
+.MuiList-root {
+  /* Add any existing CSS styles for MuiList-root here */
+  /* Ensure that the z-index is lower than that of profile-container */
+  z-index: 1;
+}
+
+.profile-container {
+  /* Add any existing CSS styles for profile-container here */
+  /* Give it a higher z-index value to make it appear above MuiList-root */
+  z-index: 2;
+}
+
+.profile-cover {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+  }
+  
+  .profile-cover .cover-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    filter: blur(5px);
+  }
+  
+  .profile-circle {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 3px #fff solid;
+    cursor: pointer;
+  }.profile-circle:hover{
+    opacity: 0.7;
+  }
+  
+  .profile-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+ .edit-btn
+{
+  background: rgb(216, 210, 210);
+  position: relative;
+  border-radius: 50%;
+  margin: 0% 53%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  cursor: pointer;
+}.edit-btn:hover{
+  opacity: 0.9;
+} 
+
+.name 
+{
+    margin: 10% 0 5% 0 ;
+    font-weight: 900;
+    font-size: 30px;
+    text-align: center;
+} 
+
+  .welcome-user p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Confirmation */
+  .confirmation {
+    margin-top: 20px;
+  }
+  
+  .confirmation h4 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .confirmation span {
+    color: orange;
+  }
+  
+  .confirm-button {
+    background-color: green;
+  }
+  
+  .not-yet-button {
+    background-color: orange;
+  }
+  
+  .confirmation button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+ }
+  
+  .confirmation button:hover {
+    opacity: 0.9;
+  }
+  
+.logout-btn
+{
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 60%;
+  margin: 3% 0;
+}
+/*   
+.User-container .item{
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 60%;
+  margin: 3% 0;
+} */
+.requests-container{
+  margin: 5%;
+}
+.Task-text {
+  margin: 5%;
+}
+  @media (max-width: 768px) {
+    .edit-btn{
+      margin: 0% 57%;
+    }
+  }

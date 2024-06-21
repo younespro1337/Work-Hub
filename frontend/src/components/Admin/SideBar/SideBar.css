@@ -1,0 +1,96 @@
+
+.wrapper {
+  display: flex;
+}
+
+main {
+    display: flex;
+    transition: 3s all;
+    justify-content: space-between;
+}
+
+.whole-container
+{
+    transition: 3s all;
+}
+
+.aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: repeating-linear-gradient(98deg,#1976d2, transparent 380px);
+    width:14%;
+    height: auto;
+    border-radius: 6px;
+    color: #fff;
+    transition: all 0.5 ease;
+  }
+ .aside a 
+  {
+    color: gold;
+    text-decoration: none;
+  }
+
+  .Avatar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 10% 0 5% 5%;
+    flex-direction: row;
+  }
+  
+ 
+   
+  .NavMenu {
+    display: flex;
+    flex-direction: column;
+    margin: 10% 0 0 4% ;
+  }
+  .NavMenu a {
+    margin-bottom: 20%;
+    text-decoration: none;
+  }
+  
+  .LogoutButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .ActiveLink {
+    list-style-type: none;
+  }
+  
+  .HoverLink:hover {
+    padding: 2px;
+  }
+  
+  .FlexLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+  }
+  
+  .Footer {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 0 4%;
+    
+  }
+  
+ 
+
+.hide {
+    visibility: hidden
+}
+.show
+{
+    visibility: visible;
+}
+/* SideBar.css */
+@media (max-width: 768px) {
+  .aside {
+    visibility: hidden;
+  }
+}

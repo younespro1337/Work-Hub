@@ -1,0 +1,204 @@
+/* Login page styles */
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  transition: 3s ease;
+  /* background-color: aqua; */
+  width: 100%;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #fff;
+  background: repeating-linear-gradient(99deg, #1976d2,transparent 500px);
+  margin: 10% 0 0 0;
+
+}
+
+.login-form h1 {
+  margin-bottom: 20px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #0069d9;
+}
+
+.choose-container {
+  display: none;
+}
+#parent-info 
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.show {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.welcome-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.welcome-user img 
+{
+  width: 30px;
+  height: 30px;
+}
+
+.welcome-user p {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dashboard button,
+.materials button,
+.home button {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dashboard button:hover,
+.materials button:hover,
+.home button:hover {
+  background-color: #0069d9;
+}
+.hint{
+  color: red;
+  font-weight: 900;
+}
+.requester_info 
+{
+  width: 100%;
+  border: #0069d9 solid 1px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-radius: 15px;
+  align-items: center;
+  height: 100px;
+}
+.requester-avatar
+{
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+}
+.hint span{
+  color: black;
+  font-family: 'Courier New', Courier, monospace;
+  
+}
+.material-infoo
+{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  border: #007bff 1px solid;
+  border-radius: 15px;
+
+}
+.material-infoo img 
+{
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+}
+.approval-buttons button {
+  display: block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.approval-buttons .approve-button {
+  background-color: #28a745;
+}
+
+.approval-buttons .reject-button {
+  background-color: #dc3545;
+}
+
+.approval-buttons .approve-button:hover
+{
+  background-color: #1e7e34;
+}
+.approval-buttons .reject-button:hover {
+  background-color: #ff0000;
+}
+
+
+.hide {
+  display: none !important;
+}
+.show 
+{
+  display: block;
+}
+.full-width {
+  width: 100%;
+}
+.full-width button 
+{
+  width: 50%;
+  text-align: center; 
+  margin: 2% 25%  ;
+}
+.confirm-button {
+  background-color: green;
+}
+
+.not-yet-button {
+  background-color: orange;
+}
+
+.not-yet-text {
+  color: orange;
+}
+
+

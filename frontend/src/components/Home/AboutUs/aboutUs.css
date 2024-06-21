@@ -1,0 +1,114 @@
+/* Styles for the container */
+.containerrr {
+  background: url('https://res.cloudinary.com/dktkavyr3/image/upload/v1690481703/Web_capture_27-7-2023_163150_localhost_vkbq8r.jpg');
+  background-repeat: no-repeat;
+  background-position:center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92%;
+  padding: 20px;
+}
+
+/* Introduction section styles */
+.introduction {
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Heading styles */
+.containerrr h1,
+.containerrr h2,
+.containerrr h3 {
+  color: #333;
+  font-weight: bold;
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Content section styles */
+.containerrr section {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+/* Paragraph styles */
+.containerrr p {
+  color: #555;
+  line-height: 1.6;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+/* Link styles */
+.containerrr a {
+  color: #ffc107;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.containerrr a:hover {
+  color: #ff9800;
+}
+
+/* Video embed styles */
+.embed-responsive {
+  margin-bottom: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  height: 250px;
+}
+
+.embed-responsive iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Links styles */
+.Links {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-around;
+}
+.Links img 
+{
+      width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.Links a label {
+  color: #555;
+  cursor: pointer;
+}
+
+.Links svg {
+  color: rgb(52, 52, 232);
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .intro {
+    padding: 10px;
+    font-size: 20px;
+  }
+
+  .containerrr section {
+    padding: 15px;
+  }
+
+  /* You can add more responsive styles as needed */
+}

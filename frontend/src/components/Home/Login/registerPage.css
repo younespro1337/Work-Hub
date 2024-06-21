@@ -1,0 +1,92 @@
+
+.wrapperr{
+  background-color: aqua;
+  height: 1200px;
+  width: 100%;
+}
+.Already-Have-Account 
+{
+  background: repeating-linear-gradient(99deg, black, transparent,transparent 1000px);
+  color: #fff;
+}
+  /* Register page styles */
+  .register-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .register-page h2 {
+    width: 40%;
+    margin-bottom: 20px;
+    margin: 5%;
+    background: repeating-linear-gradient(99deg, black, transparent,transparent 1000px);
+   color: #fff;
+   text-align: center;
+   border-radius: 3px;
+
+  }
+
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background: repeating-linear-gradient(99deg, black, transparent 1035px);
+  }
+  
+  .register-form input,
+  .register-form select
+  {
+    width: 600px;
+    padding: 10px;
+    margin-bottom: 5%;
+    border: 1.6px solid #ccc;
+    border-radius: 5px;
+  }
+  .register-form textarea {
+    width: 550px;
+    padding: 5%;
+    height: 15%;
+  }
+ 
+  .register-form label 
+  {
+    color: #fff;
+    margin-right: 5px;
+  }
+  
+  .register-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .register-form button:hover {
+    background-color: #0069d9;
+  }
+
+  @media (max-width: 768px ) {
+    .register-form input,
+    .register-form select 
+    {
+      width: 250px;
+    }
+    .register-form textarea  {
+      width: 300px;
+      height: 80px;
+    }
+  }
+  
