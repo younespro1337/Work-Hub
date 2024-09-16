@@ -1,4 +1,4 @@
-# AllMart-MERN
+# Work-Hub-MERN
 Full-Stack AllMart with Admin Dashboard & Stripe Payment Gateway.
 
 [Visit Now](https://ajial.onrender.com/) 🚀
