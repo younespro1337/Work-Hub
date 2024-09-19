@@ -10,7 +10,7 @@ config.env
 
 production
 /build
-
+/mongo-data
 # misc
 .DS_Store
 .env.local

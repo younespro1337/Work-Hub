@@ -5,20 +5,19 @@ import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:5000');
 
 export const uploadFileToCloudinary = async (file) => {
-    
-    const formData = new FormData();
-    formData.append('file', file);
-formData.append('upload_preset', 'qw4k1xjq'); 
-  
-    try {
-      const {data} = await axios.post('https://api.cloudinary.com/v1_1/dktkavyr3/image/upload', formData);
-      // console.log('Cloudinary upload response:', data);
-      return data
-    } catch (error) {
-      console.error('Error uploading to Cloudinary:', error);
-      // Handle error as needed
-    }
-  };
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+
+  try {
+    const { data } = await axios.post(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, formData);
+    // console.log('Cloudinary upload response:', data);
+    return data;
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    // Handle error as needed
+  }
+};
 
 
   export const handleFileChange = async (event, SenderId) => {
