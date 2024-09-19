@@ -13,7 +13,10 @@ const reducer = combineReducers({
     materialsRequets:materialsRequets,
     // forgotPassword: forgotPasswordReducer,
     // users: allUsersReducer,
+    //
 });
+
+
 
 let initialState = {
     header: { 

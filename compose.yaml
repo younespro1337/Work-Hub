@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    depends_on:
+      - backend  
+    build:
+      context: ./frontend
+    container_name: work-hub-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_BACKEND_URL: http://localhost:5000
+
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: sync
+    networks:
+      - workhub-network 
+        
+
+  backend:
+    depends_on:
+      - mongo
+    build:  
+      context: ./backend
+    container_name: work-hub-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./config.env
+    develop:
+      watch:
+        - path: ./backend/package.json
+          action: rebuild
+        - path: ./backend/package-lock.json
+          action: rebuild
+        - path: ./backend
+          target: /app
+          action: sync
+
+    networks:
+      - workhub-network
+      
+  mongo: 
+    image: mongo:latest
+    container_name: work-hub-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+
+    networks:
+      - workhub-network
+
+volumes:
+  mongo-data:
+
+
+networks:
+  workhub-network:
+    driver: bridge
+    
+
+

@@ -25,14 +25,6 @@ const socket = openSocket('http://localhost:5000');
 
 
 
-
-
-
-
-
-
-
-
 export default function Header() {
   const [loading , setLoading ] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -52,6 +44,8 @@ export default function Header() {
 useSocket("materialRequestsUpdate", (data) => {
 console.log('socket data:', data);
 });
+
+
 
   React.useEffect( () => {
     const fetchRequets = async () => {

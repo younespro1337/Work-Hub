@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {
 Avatar,Divider,ListItemText,ListItemAvatar,List,ListItem,Drawer,Typography,Box,Grid,Badge,Stack,styled,TextField,Paper,InputBase,IconButton
-} from '@mui/material'
+} from '@mui/material';
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -15,7 +16,7 @@ import { useRef } from 'react';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
-import EmojiPicker from 'emoji-picker-react'
+import EmojiPicker from 'emoji-picker-react';
 import { useSocket } from '../../../actions/socketService'
 import { handleFileChange } from '../../../actions/UploadMedial';
 import { TextMessage } from './TextMessage';
@@ -579,10 +580,10 @@ sortedChatMessages.length === 0 ? (
 
 
 
-            <Paper
+  <Paper
   component="form"
   sx={{
-    m: '0 5%',
+    m: '-5% 5%',
     p: '2px 4px',
     display: 'flex',
     alignItems: 'center',

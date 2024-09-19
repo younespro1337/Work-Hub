@@ -1,135 +1,111 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react'
 import Header from './components/Home/Header/Header.jsx';
 import LoginPage from './components/Auth/SingIn.jsx';
 import RegisterPage from './components/Auth/SingUp.jsx';
 import ForgetPassword from './components/Auth/ForgetPassword.jsx';
 import Search from './components/Layouts/Search';
-import Jobs from './components/Jobs/Jobs'
-
-
+import Jobs from './components/Jobs/Jobs';
 import Dashboard from './components/Admin/Charts/MainData.jsx';
-import EditWorkers from './components/Admin/Workers/Main'
+import EditWorkers from './components/Admin/Workers/Main';
 import EditMaterials from './components/Admin/Materials/Main';
-import EditJobs from './components/Admin/Jobs/Main'
-
-
-import Profile from './components/Home/profile/Main'
-import LearnBoxes  from './components/Home/article/learnMoreBox';
-import MarketingPlan  from './components/Home/article/Marketingblogs'
+import EditJobs from './components/Admin/Jobs/Main';
+import Profile from './components/Home/profile/Main';
+import LearnBoxes from './components/Home/article/learnMoreBox';
+import MarketingPlan from './components/Home/article/Marketingblogs';
 import Settings from './components/Home/Settings/Setting';
-import ChatLayouts from './components/Home/ChatLayout/ChatLayout.jsx'
-import TabsPricingExample from './components/Home/payments/Pricing.jsx';
-import Materials from './components/Home/Materials/Materials.jsx'
-import Optionbox from './components/Home/option';
+import ChatLayouts from './components/Home/ChatLayout/ChatLayout.jsx';
+import Materials from './components/Home/Materials/Materials.jsx';
 import Aboutus from './components/Home/AboutUs/about-us';
 import ProtectedRoute from './Routes/ProtectedRoute.js';
-import Checkout from './components/payments/Checkout.jsx';
+import Resolver from './components/NewHome/Resolver.js';
+import useGaTracker from './utils/GA.js';
+import AppAppBar from './components/NewHome/components/AppAppBar.js';
+import TemplateFrame from './components/NewHome/TemplateFrame.js';
+import getMPTheme from './components/NewHome/theme/getMPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import SignInSide from './components/Login/SingIn/SignInSide.js';
+import SignUp from './components/Login/SingUp/SingUp.js';
+
 
 const App = () => {
+  const [mode, setMode] = React.useState('light');
+  const [showCustomTheme, setShowCustomTheme] = React.useState(true);
+  const MPTheme = createTheme(getMPTheme(mode));
+  const defaultTheme = createTheme({ palette: { mode } });
+
+  React.useEffect(() => {
+    const savedMode = localStorage.getItem('themeMode');
+    if (savedMode) {
+      setMode(savedMode);
+    } else {
+      const systemPrefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+      setMode(systemPrefersDark ? 'dark' : 'light');
+    }
+  }, []);
+
+  const toggleColorMode = () => {
+    const newMode = mode === 'dark' ? 'light' : 'dark';
+    setMode(newMode);
+    localStorage.setItem('themeMode', newMode);
+  };
+
+  const toggleCustomTheme = () => {
+    setShowCustomTheme(prev => !prev);
+  };
+
   return (
-    <>
-      <Router>
-         <Header />
-
+    <Router>
+      <>       
+      <TemplateFrame
+      toggleCustomTheme={toggleCustomTheme}
+      showCustomTheme={showCustomTheme}
+      mode={mode}
+      toggleColorMode={toggleColorMode}
+      >
+    <ThemeProvider  theme={showCustomTheme ? MPTheme : defaultTheme}>
+      <CssBaseline enableColorScheme />
+     <UseGaTrackerWrapper>
+      <AppAppBar />
+      <div style={{marginTop:'90px'}}>
         <Routes>
-        <Route path="/pricing" element={<TabsPricingExample />} />       
-        <Route path="/checkout" element={<Checkout />} />       
-        <Route path="/singin" element={<LoginPage />} />       
-        <Route path="/singup" element={<RegisterPage />} />
-           {/* start user section     */}
-          <Route path='/'  exact   element={
-            <ProtectedRoute>
-          <Optionbox />
-            </ProtectedRoute>
-          }></Route>
-
-<Route path="/about-us" element={
-    <ProtectedRoute>
-        <Aboutus />
-    </ProtectedRoute>
-} />
-
-<Route path="/materials" element={
-    <ProtectedRoute>
-        <Materials />
-    </ProtectedRoute>
-} />
-<Route path="/search" element={
-    <ProtectedRoute>
-        <Search />
-    </ProtectedRoute>
-} />
-
-<Route path="/Jobs" element={
-    <ProtectedRoute>
-        <Jobs />
-    </ProtectedRoute>
-} />
-
-<Route path="/settings" element={
-    <ProtectedRoute>
-        <Settings />
-    </ProtectedRoute>
-} />
-
-<Route path="/inbox" element={
-    <ProtectedRoute>
-        <ChatLayouts />
-    </ProtectedRoute>
-} />
-<Route path="/profile" element={
-    <ProtectedRoute>
-        <Profile />
-    </ProtectedRoute>
-} />
-
-{/* end users section*/}
-      
-
-
-
-
-
-
-
-<Route path="/admin/dashboard" element={
-  <ProtectedRoute>
-    <Dashboard />
-  </ProtectedRoute>
-} ></Route>
-
-<Route path='/admin/edit-workers' element={
-  <ProtectedRoute isAdmin={true}>
-    <EditWorkers />
-  </ProtectedRoute>
-}></Route>
-
-<Route path='/admin/edit-materials' element={
-  <ProtectedRoute isAdmin={true}>
-    <EditMaterials />
-  </ProtectedRoute>
-}></Route>
-
-<Route path='/admin/edit-jobs' element={
-  <ProtectedRoute isAdmin={true}>
-    <EditJobs />
-  </ProtectedRoute>
-}></Route>
-
-
-
-{/* end Admin Dashboard Section */}
+        <Route path="/singin" element={<SignInSide />} /> 
+        <Route path="/singup" element={<SignUp />} />
+          {/* User section */}
+          <Route path="/" element={<ProtectedRoute><Resolver /></ProtectedRoute>} />
+          <Route path="/about-us" element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
+          <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
+          <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
+          <Route path="/Jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+          <Route path="/inbox" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          {/* Admin Dashboard Section */}
+          <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin/edit-workers" element={<ProtectedRoute isAdmin={true}><EditWorkers /></ProtectedRoute>} />
+          <Route path="/admin/edit-materials" element={<ProtectedRoute isAdmin={true}><EditMaterials /></ProtectedRoute>} />
+          <Route path="/admin/edit-jobs" element={<ProtectedRoute isAdmin={true}><EditJobs /></ProtectedRoute>} />
+          {/* Additional Routes */}
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/learn-more" element={<LearnBoxes />} />
-          <Route path='/Marketing-plan' element={<MarketingPlan />} />
-
+          <Route path="/Marketing-plan" element={<MarketingPlan />} />
         </Routes>
+        </div>
+        </UseGaTrackerWrapper>
+        </ThemeProvider>
+        </TemplateFrame>
+      </>
 
-
-      </Router>
-    </>
+    </Router>
   );
+};
 
+const UseGaTrackerWrapper = ({children}) => {
+  useGaTracker();
+  return children;
 };
 
 export default App;
