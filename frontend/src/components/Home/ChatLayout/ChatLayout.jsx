@@ -7,7 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CallIcon from '@mui/icons-material/Call';
-import { getAllUsers , sendMessages , getAllChats } from '../../../actions/userAction';
+import { getAllUsers , sendMessages , getAllChats, setMarginTop } from '../../../actions/userAction';
 import SearchIcon from '@mui/icons-material/Search';
 import Loading from '../../Layouts/loading';
 import SendIcon from '@mui/icons-material/Send';
@@ -48,10 +48,14 @@ const ChatLayout = () => {
     const [chatMessages, setChatMessages ] = React.useState([]);
     const Ruser = useSelector(state => state.user);
     const [memberDetails, setMemberDetails] = React.useState({});
-    const [marginTop, setMarginTop] = React.useState(2000); // State variable to hold marginTop value
+    const [marginTopp, setMarginTopp] = React.useState(2000); // State variable to hold marginTop value
     const member = useSelector(state => state.memeberReducer.selectedMember);
     // console.log('member:',member)
+    const dispatch = useDispatch(); // Initialize dispatch
 
+    React.useEffect(() => {
+      dispatch(setMarginTop('90px'));
+    }, [dispatch]);
     
 
     const handleMemberSelect = async (member) => {
@@ -155,6 +159,7 @@ const getBackgroundColor = (member) => (receiver === member?._id ? '#f3f3f8' : '
           ],
         };
         
+
         socket.emit('message', { participants: data.participants, message: data.messages[0] });
     
         // Send message and get the updated chat
@@ -191,6 +196,7 @@ const getBackgroundColor = (member) => (receiver === member?._id ? '#f3f3f8' : '
       }
     };
     
+
     
 
 const handleBoxClick = () => {
@@ -306,7 +312,6 @@ const sender_id = data?.message?.sender;
 
 
 const sortedChatMessages = [...chatMessages].sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
-
 
 
 React.useEffect(() => {
@@ -528,14 +533,14 @@ React.useEffect(() => {
   >
  <Box  
   style={{
-    marginTop:`${marginTop}rem`,
+    marginTop:`${marginTopp}rem`,
     alignItems: 'center',
     flexDirection:'column',
     display:'flex'
     
   }}
   >
-    {console.log(marginTop)}
+    {console.log(marginTopp)}
   {loading ? (
   <div> <Loading /></div>
 ) : 
@@ -773,9 +778,6 @@ scrollbarWidth: 'none',  // Hide scrollbar for Firefox
  </List>
 </Grid>
          
-
-
-
 
 
 

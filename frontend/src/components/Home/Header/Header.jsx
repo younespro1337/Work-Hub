@@ -248,6 +248,8 @@ const handleProfileMenuOpen = (event) => {
                 </Avatar>
               </Typography>
             </Link>
+
+
             <form action="" onSubmit={handleSubmit}>
               <Search>
                 <SearchIconWrapper>
@@ -261,8 +263,11 @@ const handleProfileMenuOpen = (event) => {
                 />
               </Search>
             </form>
+
+
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              
               <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                 <Badge badgeContent={4} color="error">
                 <Link to="/inbox" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -270,6 +275,9 @@ const handleProfileMenuOpen = (event) => {
                 </Link>
                 </Badge>
               </IconButton>
+
+
+
               <IconButton
                 size="large"
                 aria-label={`show ${requestData?.requests?.length} new notifications`}
@@ -280,6 +288,9 @@ const handleProfileMenuOpen = (event) => {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
+
+
+
               <IconButton
                 size="large"
                 edge="end"
@@ -293,6 +304,9 @@ const handleProfileMenuOpen = (event) => {
                   <AccountCircle />
                 </Avatar>
               </IconButton>
+
+
+
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton

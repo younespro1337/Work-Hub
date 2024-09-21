@@ -67,7 +67,14 @@ export default function SignUp() {
     onSubmit: async (values) => {
       try {
         const res = await dispatch(registerUser(values));
-        navigate('/');
+        if(res.status === "500" || !res.status.length > 0 ) {
+          alert(res.message);
+          alert(res.status);
+          // Alert the user about the error
+          // setAlert('Error signing up user. Please try again.');
+          // setAlertSeverity('error');
+        }
+        // navigate('/');
       } catch (error) {
         console.error('Error signing up user:', error);
         // Show alert for duplicate email address

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './profile.css';
@@ -7,6 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import ProfileHeader from './ProfileHeader';
 import TasksContainer from './TasksContainer';
+import { setMarginTop } from '../../../actions/userAction';
 
 
 
@@ -23,7 +24,12 @@ function Main() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const Ruser = useSelector(state => state.user);
+  const dispatch = useDispatch();
   
+  // Dispatch the action when the component mounts
+  useEffect(() => {
+    dispatch(setMarginTop('100px'));
+  }, [dispatch]);
 
  useEffect(() => {
    setUser(Ruser)

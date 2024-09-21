@@ -27,13 +27,16 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import SignInSide from './components/Login/SingIn/SignInSide.js';
 import SignUp from './components/Login/SingUp/SingUp.js';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setMarginTop } from './actions/userAction.js';
 
 const App = () => {
   const [mode, setMode] = React.useState('light');
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const MPTheme = createTheme(getMPTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
+  const  marginTop  = useSelector(state => state.layouts);
+  
 
   React.useEffect(() => {
     const savedMode = localStorage.getItem('themeMode');
@@ -70,12 +73,12 @@ const App = () => {
       <CssBaseline enableColorScheme />
      <UseGaTrackerWrapper>
       <AppAppBar />
-      <div style={{marginTop:'90px'}}>
+      <div style={marginTop}>
         <Routes>
+        <Route path="/" element={<Resolver />} />
         <Route path="/singin" element={<SignInSide />} /> 
         <Route path="/singup" element={<SignUp />} />
           {/* User section */}
-          <Route path="/" element={<ProtectedRoute><Resolver /></ProtectedRoute>} />
           <Route path="/about-us" element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
           <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />

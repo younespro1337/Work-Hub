@@ -1,8 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userReducer, menuReducer, profileReducer, sidebarReducer, memberReducer , tasksDataReducer, materialsRequets} from './reducers/userReducer';
-
+import { userReducer, menuReducer, profileReducer, sidebarReducer, memberReducer , tasksDataReducer, materialsRequets, layoutReducer} from './reducers/userReducer';
 const reducer = combineReducers({
     user: userReducer,
     header: menuReducer,
@@ -11,6 +10,7 @@ const reducer = combineReducers({
     memeberReducer: memberReducer,
     tasksData: tasksDataReducer,
     materialsRequets:materialsRequets,
+    layouts:layoutReducer
     // forgotPassword: forgotPasswordReducer,
     // users: allUsersReducer,
     //

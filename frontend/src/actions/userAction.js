@@ -6,10 +6,18 @@ import {
  REGISTER_USER_SUCCESS,
  LOGIN_USER_REQUEST,
  LOGIN_USER_FAIL,
- LOGIN_USER_SUCCESS
+ LOGIN_USER_SUCCESS,
+ SET_MARGIN_TOP
 } from '../constants/userConstant.js'
 
 // login user 
+
+
+export const setMarginTop = (margin) => ({
+  type: SET_MARGIN_TOP,
+  payload: margin,
+});
+ 
 
 export const loginUser = (email, password) => async (dispatch) => {
   try {

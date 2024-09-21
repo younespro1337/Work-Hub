@@ -1,3 +1,4 @@
+import { margin } from '@mui/system';
 import {
     LOGIN_USER_REQUEST,
     LOGIN_USER_SUCCESS,
@@ -29,7 +30,9 @@ import {
     DELETE_USER_RESET,
     SET_SIDEBARLABEL_VALUE,
     SET_SELECTED_MEMBER_DETAILS,
-    SET_TASKS_DETAILS
+    SET_TASKS_DETAILS,
+    SET_MARGIN_TOP
+
   } from '../constants/userConstant';
 
   const initialState = {
@@ -171,6 +174,7 @@ import {
 };
 
 
+
   export const menuReducer = (state = initialState, action) => {
     switch (action.type) {
       case 'SET_MENU_OPEN':
@@ -232,3 +236,20 @@ export const materialsRequets = (state = initialState, {type, payload}) => {
       return state;
   }
 }
+
+
+const initialLayoutState = {
+  marginTop: '90px',
+};
+
+export const layoutReducer = (state = initialLayoutState, action) => {
+  switch (action.type) {
+    case SET_MARGIN_TOP:
+      return {
+        ...state,
+        marginTop: action.payload,
+      };
+    default:
+      return state;
+  }
+};

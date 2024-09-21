@@ -106,6 +106,7 @@ exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
       }
 
       if (firstName && lastName && email && password && position && salary && gender && nationalId && phoneNumber && legalInfo) {
+        console.log('im here:');
           user = await Workers.create({
               firstName,
               lastName,
