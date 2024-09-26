@@ -1,78 +1,90 @@
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Sitemark from './SitemarkIcon';
-import { IconButton, AppBar, Box, Button, Badge, Typography, Avatar, MenuItem, Menu } from '@mui/material/';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MailIcon from '@mui/icons-material/Mail';
+import * as React from "react";
+import { styled, alpha } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Container from "@mui/material/Container";
+import Drawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Sitemark from "./SitemarkIcon";
+import {
+  IconButton,
+  AppBar,
+  Box,
+  Button,
+  Badge,
+  Typography,
+  Avatar,
+  MenuItem,
+  Menu,
+} from "@mui/material/";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MailIcon from "@mui/icons-material/Mail";
 
 // Import extracted components
 // import ProfileMenu from './ProfileMenu'; // New ProfileMenu component
-import Notifications from '../../Home/Header/Notifications'; // New Notifications component
+import Notifications from "../../Home/Header/Notifications"; // New Notifications component
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
   flexShrink: 0,
   borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
-  backdropFilter: 'blur(24px)',
-  border: '1px solid',
+  backdropFilter: "blur(24px)",
+  border: "1px solid",
   borderColor: theme.palette.divider,
   backgroundColor: alpha(theme.palette.background.default, 0.4),
   boxShadow: theme.shadows[1],
-  padding: '8px 12px',
+  padding: "8px 12px",
 }));
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
-  const Ruser = useSelector(state => state.user.user);
+  const Ruser = useSelector((state) => state.user.user);
   const AvatarUrl = Ruser?.avatar?.url;
+  const [avatarUrl, setAvatarUrl] = React.useState(AvatarUrl);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [notificationDialogOpen, setNotificationDialogOpen] = React.useState(false);
+  const [notificationDialogOpen, setNotificationDialogOpen] =
+    React.useState(false);
   const [requestData, setRequestData] = React.useState([]);
 
-
-const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) => (
-  <Menu
-    anchorEl={anchorEl}
-    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    id="primary-profile-menu"
-    open={isMenuOpen}
-    onClose={handleMenuClose}
-  >
-    <MenuItem onClick={handleMenuClose}>
-      <Button component={Link} to="/profile" color="inherit">
-        Profile
-      </Button>
-    </MenuItem>
-    <MenuItem onClick={handleMenuClose}>
-      <Button component={Link} to="/settings" color="inherit">
-        Settings
-      </Button>
-    </MenuItem>
-    <MenuItem onClick={handleLogOut}>
-      <Button color="inherit">
-        Log out
-      </Button>
-    </MenuItem>
-  </Menu>
-);
-
-
+  const ProfileMenu = ({
+    anchorEl,
+    isMenuOpen,
+    handleMenuClose,
+    handleLogOut,
+  }) => (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id="primary-profile-menu"
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        <Button component={Link} to="/profile" color="inherit">
+          Profile
+        </Button>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Button component={Link} to="/settings" color="inherit">
+          Settings
+        </Button>
+      </MenuItem>
+      <MenuItem onClick={handleLogOut}>
+        <Button color="inherit">Log out</Button>
+      </MenuItem>
+    </Menu>
+  );
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -81,7 +93,7 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-    dispatch({ type: 'SET_MENU_CLOSE', payload: false }); 
+    dispatch({ type: "SET_MENU_CLOSE", payload: false });
   };
 
   const handleMobileMenuClose = () => {
@@ -90,7 +102,7 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
 
   const handleLogOut = () => {
     localStorage.clear();
-    navigate('/signin');
+    window.location.href = "/singin";
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -101,19 +113,19 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
     setNotificationDialogOpen(true);
   };
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -158,37 +170,77 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
 
   return (
     <>
-      <AppBar position="fixed" sx={{ boxShadow: 0, bgcolor: 'transparent', backgroundImage: 'none', mt: 10 }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          boxShadow: 0,
+          bgcolor: "transparent",
+          backgroundImage: "none",
+          mt: 10,
+        }}
+      >
         <Container maxWidth="lg">
           <StyledToolbar>
             {/* Logo */}
-            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
+            <Box
+              sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}
+            >
               <Link to="/">
                 <Sitemark />
               </Link>
-              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <Button variant="text" color="info" size="small">Features</Button>
-                <Button variant="text" color="info" size="small">Testimonials</Button>
-                <Button variant="text" color="info" size="small">Highlights</Button>
-                <Button variant="text" color="info" size="small">Pricing</Button>
-                <Button variant="text" color="info" size="small">FAQ</Button>
-                <Button variant="text" color="info" size="small">Blog</Button>
+              <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                <Button variant="text" color="info" size="small">
+                  Features
+                </Button>
+                <Button variant="text" color="info" size="small">
+                  Testimonials
+                </Button>
+                <Button variant="text" color="info" size="small">
+                  Highlights
+                </Button>
+                <Button variant="text" color="info" size="small">
+                  Pricing
+                </Button>
+                <Button variant="text" color="info" size="small">
+                  FAQ
+                </Button>
+                <Button variant="text" color="info" size="small">
+                  Blog
+                </Button>
               </Box>
             </Box>
 
             {/* Desktop Menu */}
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+            <Box
+              sx={{
+                display: { xs: "none", md: "flex" },
+                gap: 1,
+                alignItems: "center",
+              }}
+            >
               {Ruser && Object.keys(Ruser).length > 0 ? (
                 <>
-                  <IconButton size="large" aria-label="show mails" color="inherit">
+                  <IconButton
+                    size="large"
+                    aria-label="show mails"
+                    color="inherit"
+                  >
                     <Badge badgeContent={0} color="error">
-                      <Link to="/inbox" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Link
+                        to="/inbox"
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
                         <MailIcon />
                       </Link>
                     </Badge>
                   </IconButton>
 
-                  <IconButton size="large" aria-label="show notifications" color="inherit" onClick={handleNotificationsOpen}>
+                  <IconButton
+                    size="large"
+                    aria-label="show notifications"
+                    color="inherit"
+                    onClick={handleNotificationsOpen}
+                  >
                     <Badge badgeContent={0} color="error">
                       <NotificationsIcon />
                     </Badge>
@@ -203,7 +255,13 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
                     onClick={handleProfileMenuOpen}
                     color="inherit"
                   >
-                    <Avatar src={AvatarUrl}>
+                    <Avatar
+                    src={avatarUrl}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "";
+                      }}
+                    >
                       <AccountCircle />
                     </Avatar>
                   </IconButton>
@@ -216,10 +274,22 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
                 </>
               ) : (
                 <>
-                  <Button component={Link} to="/singin" color="primary" variant="text" size="small">
+                  <Button
+                    component={Link}
+                    to="/singin"
+                    color="primary"
+                    variant="text"
+                    size="small"
+                  >
                     Sign in
                   </Button>
-                  <Button component={Link} to="/singup" color="primary" variant="contained" size="small">
+                  <Button
+                    component={Link}
+                    to="/singup"
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                  >
                     Sign up
                   </Button>
                 </>
@@ -227,16 +297,23 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
             </Box>
 
             {/* Mobile Menu */}
-            <Box sx={{ display: { sm: 'flex', md: 'none' } }}>
+            <Box sx={{ display: { sm: "flex", md: "none" } }}>
               <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
                 <MenuIcon />
               </IconButton>
               <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
-                <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box sx={{ p: 2, backgroundColor: "background.default" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <IconButton onClick={toggleDrawer(false)}>
                       <CloseRoundedIcon />
-                    </IconButton>f
+                    </IconButton>
+                    f
                   </Box>
                   <MenuItem>Features</MenuItem>
                   <MenuItem>Testimonials</MenuItem>
@@ -245,23 +322,23 @@ const ProfileMenu = ({ anchorEl, isMenuOpen, handleMenuClose, handleLogOut }) =>
                   <MenuItem>FAQ</MenuItem>
                   <MenuItem>Blog</MenuItem>
                   <MenuItem>
-                    <Button 
-                    color="primary" 
-                    variant="contained" 
-                    fullWidth
-                    component={Link}
-                    to='/singup'
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      fullWidth
+                      component={Link}
+                      to="/singup"
                     >
                       Sign up
                     </Button>
                   </MenuItem>
                   <MenuItem>
-                    <Button 
-                    color="primary" 
-                    variant="outlined" 
-                    fullWidth
-                    component={Link}
-                    to='/singin'
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      fullWidth
+                      component={Link}
+                      to="/singin"
                     >
                       Sign in
                     </Button>

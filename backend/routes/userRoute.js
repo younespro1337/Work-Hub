@@ -22,17 +22,30 @@ const {
   updatedTaskDone,
   editWorker,
   editJobs,
-  changePassword,
+  forgotPassword,
   sendMessages,
   getAllChats,
-  registerWorker
+  registerWorker,
+  googleLogin,
+  resetPassword,
+
 } = require('../controllers/userController');
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
+const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
+// Rate Limiting
+const defaultLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: 'Too many login attempts, please try again later.'
+});
+
 router.post('/register', registerWorker);
-router.post('/login', loginUser);
+router.post('/login', defaultLimiter,  loginUser);
+router.post('/oauth/google', googleLogin);
+router.post('/resetPassword/:token', defaultLimiter,resetPassword);
 router.route('/admin/users').get(isAuthenticatedUser, authorizeRoles('admin'), getAllUsers);
 router.post('/approve', approveRequest);
 router.post('/reject', rejectRequest);
@@ -54,7 +67,7 @@ router.post('/updateTasks', updatedTask);
 router.post('/NewMemberMarketingB2B', NewMemberMarketingB2B);
 router.post('/editworker', editWorker);
 router.post('/editJobs', editJobs);
-router.post('/changePassword', changePassword);
+router.post('/forgotPassword', forgotPassword);
 router.post('/send-messages', sendMessages);
 router.get('/getAllChats', getAllChats);
 module.exports = router;

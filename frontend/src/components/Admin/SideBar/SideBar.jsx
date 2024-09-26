@@ -91,7 +91,7 @@ const SideBar = ({ openAddWorkerDialog, openAddMaterialDialog, openAddJobsDialog
   return (
     <aside className="aside sidebar-container">
       <div className="Avatar">
-        <Avatar alt="Avatar" src={user?.avatar.url} />
+        <Avatar alt="Avatar" />
         <div className="UserInfo">
           <Typography variant='contained'>{user?.name || user?.firstName}</Typography>
         </div>

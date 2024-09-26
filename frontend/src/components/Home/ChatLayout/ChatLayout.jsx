@@ -339,8 +339,10 @@ React.useEffect(() => {
     }
   });
   const newMarginTop = totalHeight / 16; 
+  console.log(`Total Height: ${totalHeight}, New Margin Top: ${newMarginTop}`);
   setMarginTop(newMarginTop);
 }, [sortedChatMessages]);
+
 
 
     return (
@@ -532,11 +534,12 @@ React.useEffect(() => {
     }}
   >
  <Box  
-  style={{
+  sx={{
     marginTop:`${marginTopp}rem`,
     alignItems: 'center',
     flexDirection:'column',
-    display:'flex'
+    display:'flex',
+    width:' 100%',
     
   }}
   >

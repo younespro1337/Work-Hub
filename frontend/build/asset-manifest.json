@@ -1,14 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.7aee9c56.css",
-    "main.js": "/static/js/main.26d4ef02.js",
+    "main.css": "/static/css/main.f95b3e76.css",
+    "main.js": "/static/js/main.3454bfda.js",
     "static/media/G-M-Marker.png": "/static/media/G-M-Marker.afb7d7f9259f705190ea.png",
     "static/media/404-not-found.svg": "/static/media/404-not-found.f58b723c5e420e43683574327be5529a.svg",
-    "static/media/svgLogo.svg": "/static/media/svgLogo.1382f241caafd837ecd80730cdf16bcd.svg",
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.7aee9c56.css",
-    "static/js/main.26d4ef02.js"
+    "static/css/main.f95b3e76.css",
+    "static/js/main.3454bfda.js"
   ]
 }

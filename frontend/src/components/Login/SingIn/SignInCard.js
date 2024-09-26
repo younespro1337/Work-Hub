@@ -15,10 +15,13 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useFormik } from 'formik';
-import { loginUser } from '../../../actions/userAction';
+import { googleLogin, loginUser, forgotPassword} from '../../../actions/userAction';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signInSchema } from '../../Auth/validationShemas';
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import useRedirectBasedOnRole from '../../../utils/redirect';
+import CustomSnackbar from '../../Layouts/Snackbar';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -42,6 +45,10 @@ export default function SignInCard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false); 
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
+  const RedirectBasedOnRole = useRedirectBasedOnRole()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,6 +57,28 @@ export default function SignInCard() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const googleSignIn = useGoogleLogin({
+    onSuccess: async (res) => {
+      console.log('Google login success:', res);
+  
+      // Ensure correct extraction of access_token
+      const access_token = res.access_token;  // This should be the actual token, not an object
+  
+      try {
+        const res = await dispatch(googleLogin(access_token));
+        const { role } = res.user
+        if (res && res.success) {
+          RedirectBasedOnRole(role);
+        }
+      } catch (error) {
+        console.error('Error during Google sign-up:', error);
+      }
+    },
+    onFailure: (error) => console.error('Google login failed:', error),
+  });
+
+
 
   const formik = useFormik({
     initialValues: {
@@ -60,7 +89,12 @@ export default function SignInCard() {
     onSubmit: async (values) => {
       try {
         const res = await dispatch(loginUser(values));
-        navigate('/');
+        console.log(res);
+        
+        if (res) {
+          const { role } = res.user; 
+          RedirectBasedOnRole(role); 
+        }
       } catch (error) {
         if (error.response && error.response.status === 401) {
           formik.setFieldError('email', 'Invalid email or password');
@@ -75,6 +109,15 @@ export default function SignInCard() {
       }
     },
   });
+  
+
+
+
+  
+
+ 
+
+
 
   return (
     <Card variant="outlined">
@@ -140,11 +183,17 @@ export default function SignInCard() {
             {...formik.getFieldProps('password')}
           />
         </FormControl>
+
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
         />
-        <ForgotPassword open={open} handleClose={handleClose} />
+
+        <ForgotPassword 
+        open={open} 
+        handleClose={handleClose}
+         
+        />
         <Button type="submit" fullWidth variant="contained">
           Sign in
         </Button>
@@ -168,6 +217,7 @@ export default function SignInCard() {
           type="button"
           fullWidth
           variant="outlined"
+          onClick={googleSignIn}
           startIcon={<GoogleIcon />}
         >
           Sign in with Google
@@ -176,11 +226,14 @@ export default function SignInCard() {
           type="button"
           fullWidth
           variant="outlined"
+          onClick={googleSignIn}
           startIcon={<FacebookIcon />}
         >
           Sign in with Facebook
         </Button>
       </Box>
+
+    
     </Card>
   );
 }

@@ -56,42 +56,113 @@ export const loginUser = (email, password) => async (dispatch) => {
 
 
 
-export const registerUser = (userData) => async (dispatch) => {
+// Google Login Action
+export const googleLogin = (access_token) => async (dispatch) => {
   try {
-    dispatch({ type: REGISTER_USER_REQUEST });
+    dispatch({ type: LOGIN_USER_REQUEST });
 
- // const config = {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // };
 
-    const { data } = await axios.post('/api/v1/register', userData);
+    // console.log('access_token: ',access_token)
 
-    console.log('Signup response from server:', data);  // Debugging log
+    const googleUserInfoResponse = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
+    // console.log('google response:',googleUserInfoResponse)
+    // Retrieve the relevant user info
+    const userData = googleUserInfoResponse.data;
 
+    // Now, send this data to your backend for further processing
+    const { data } = await axios.post('/api/v1/oauth/google', {
+      userData
+    });
+
+    console.log(data)
+    // Extract the token and user from the response
     const token = data.token;
+    const user = data.user;
+     
 
+    // Store token and user in localStorage
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-
-    console.log('Stored in localStorage:', localStorage.getItem('user'));  // Debugging log
+    localStorage.setItem('user', JSON.stringify(user));
 
     dispatch({
-      type: REGISTER_USER_SUCCESS,
-      payload: data.user,
+      type: LOGIN_USER_SUCCESS,
+      payload: user,
     });
 
     return data;
 
-  } catch (error) {       
-
+  } catch (error) {
     dispatch({
-      type: REGISTER_USER_FAIL,
-      payload: error.response.data.message,
+      type: LOGIN_USER_FAIL,
+      payload: error.response ? error.response.data.message : error.message,
     });
   }
 };
+
+
+
+
+
+
+export const registerUser = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: REGISTER_USER_REQUEST });
+
+    // Make the request to the backend
+    const { data } = await axios.post('/api/v1/register', userData);
+
+    console.log('Signup response from server:', data);  
+
+    const token = data.token;
+    const user = data.user;
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    console.log('Stored in localStorage:', localStorage.getItem('user'));  
+
+    dispatch({
+      type: REGISTER_USER_SUCCESS,
+      payload: user,
+    });
+
+    return { success: true, data };  // Return a success object
+
+  } catch (error) {
+    // Handle error and return it
+    const errorMessage = error.response ? error.response.data.message : 'Sign-up failed. Please try again.';
+    dispatch({
+      type: REGISTER_USER_FAIL,
+      payload: errorMessage,
+    });
+    return { success: false, message: errorMessage }; // Return an error object
+  }
+};
+
+
+
+
+export const forgotPassword = async (email) => {
+    try {
+        const response = await axios.post('/api/v1/forgotPassword', { email });
+
+        if (response.data.success) {
+            console.log('Email found, instructions sent!');
+            return { success: true, message: 'Reset password email sent successfully.' };
+        } else {
+            console.error('Email not found or other issue occurred.');
+            return { success: false, message: 'Could not send reset email.' };
+        }
+    } catch (error) {
+        // Handle errors (like network issues, etc.)
+        console.error('Error in forgotPassword action:', error.response?.data?.message || error.message);
+        return { success: false, message: 'Error while trying to reset password.' };
+    }
+};
+
+
+
+
 
 
 

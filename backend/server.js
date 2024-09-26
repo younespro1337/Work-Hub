@@ -6,7 +6,7 @@ const cors = require('cors');
 const connectDatabase = require('./config/database');
 const cloudinary = require('cloudinary');
 const { Server } = require('socket.io');
-
+const { testEmail } = require("./utils/sendEmail")
 // Create an HTTP server
 const httpServer = http.createServer(app);
 
@@ -28,18 +28,18 @@ const PORT = process.env.PORT || 5000;
 
 // Handle Socket.IO connection event
 io.on('connection', (socket) => {
-console.log(`A user connected id = ${socket.id}`);
+// console.log(`A user connected id = ${socket.id}`);
 
 // dle 'message' event
 socket.on('message', (data) => {
-console.log('Received message:', data);
+// console.log('Received message:', data);
 // Broadcast the message to all connected clients
 io.emit('message', data);
 
 })
 
 socket.on('materialRequest', async (userId) => {
-  console.log(`User ${userId} joined with socket ID: ${socket.id}`);
+  // console.log(`User ${userId} joined with socket ID: ${socket.id}`);
 });
 
 
@@ -50,6 +50,7 @@ console.log('User disconnected');
 
 });
 })
+
 
 
 module.exports = io ;
@@ -68,6 +69,7 @@ process.on('uncaughtException', (err) => {
 
 // Connect to the database
 connectDatabase();
+
 
 // Configure Cloudinary
 cloudinary.config({

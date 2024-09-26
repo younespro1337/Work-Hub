@@ -3,8 +3,14 @@ const User = require('../models/workersModel');
 const ErrorHandler = require('../utils/errorHandler');
 const asyncErrorHandler = require('./asyncErrorHandler');
 
-exports.isAuthenticatedUser = asyncErrorHandler(async (req, res, next) => {
 
+
+
+
+exports.isAuthenticatedUser = asyncErrorHandler(async (req, res, next) => {
+    console.log(req.body)
+     console.log(req.cookies);
+    
     const { token } = req.cookies;
 
     // Add a condition to allow unauthenticated access to the route
@@ -17,23 +23,13 @@ exports.isAuthenticatedUser = asyncErrorHandler(async (req, res, next) => {
     }
 
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decodedData);
     req.user = await User.findById(decodedData.id);
     next();
 });
 
 
-exports.isAuthenticatedUser = asyncErrorHandler(async (req, res, next) => {
 
-    const { token } = req.cookies;
-
-    if (!token ) {
-        return next(new ErrorHandler("Please Login to Access", 401))
-    }
-
-    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decodedData.id);
-    next();
-});
 
 
 exports.authorizeRoles = (...roles) => {

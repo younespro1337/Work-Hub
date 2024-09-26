@@ -10,19 +10,14 @@ const sendToken = require('../utils/sendToken');
 const MaterialRequest = require('../models/MaterialRequestModel');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const path = require('path');
 const fs = require('fs');
 const Chats = require('../models/chatModel');
-// Create an HTTP server
-const { Server } = require('socket.io');
-const http = require('http');
-const app = require('../app.js');
-const { timeStamp } = require('console');
-// const server = http.createServer(app);
-// const io = new Server(server);
 const axios = require('axios'); 
 const  { validate } = require('deep-email-validator') ;
 const ErrorHandler = require("../utils/errorHandler");
+const crypto = require('crypto');
+const sendEmail = require('../utils/sendEmail');
+
 
 async function generateUniqueNationalId() {
     try {
@@ -60,11 +55,61 @@ function generateRandomNationalId(length) {
     return result;
 }
 
+exports.googleLogin = asyncErrorHandler(async (req, res, next) => {
+
+  const { userData } = req.body; 
+
+  const { email, given_name: firstName, family_name: lastName, picture } = userData;
+
+  try {
+    // Check if the user already exists
+    let user = await Workers.findOne({ email });
+    
+
+    if (!user) {
+      user = await Workers.create({
+        firstName,
+        lastName,
+        email,
+        password: crypto.randomBytes(10).toString('hex'), 
+        avatar: {
+          public_id: 'N/A' , url: picture || 'https://cdnassets.hw.net/eb/31/777a1d784ee2a38d9a739146266d/adobestock-262235652-web.jpg',  // Fallback to default picture
+        },
+      });
+    
+      // console.log('New OAuth user created:', user);
+    }
+    
+    // Generate JWT token for the user (existing or newly created)
+    const token = user.generateToken();
+    
+    // Send the token and user data back to the client
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        avatar: user.avatar,
+        role: user.role,
+      },
+    });
+
+  } catch (error) {
+    console.error('Error during Google login:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error during Google login',
+    });
+  }
+});
 
 
 
 exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { 
       firstName, 
       lastName, 
@@ -93,7 +138,7 @@ exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
           validateSMTP: false,
       });
 
-      console.log('full validationResult:', validationResult);
+      // console.log('full validationResult:', validationResult);
 
       if (!validationResult.valid) {
           throw new ErrorHandler('Invalid email format, please provide a valid email address', 400);
@@ -101,12 +146,17 @@ exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
 
       // Check if email is already in use
       const existingUser = await Workers.findOne({ email });
-      if (existingUser) {
-          throw new ErrorHandler('Email is already in use', 400);
-      }
+if (existingUser) {
+  console.log(existingUser)
+    return res.status(400).json({
+        success: false,
+        message: 'This email is already registered. Please use a different email or log in.'
+    });
+}
+
 
       if (firstName && lastName && email && password && position && salary && gender && nationalId && phoneNumber && legalInfo) {
-        console.log('im here:');
+        // console.log('im here:');
           user = await Workers.create({
               firstName,
               lastName,
@@ -138,7 +188,6 @@ exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
               email,
               password,
               role: 'unknown',
-              nationalId,
               receiveUpdates: true,
           });
           
@@ -150,7 +199,7 @@ exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
 
   } catch (error) {
       console.error(error);
-      next(error); // Pass error to the error handler middleware
+      next(error); 
   }
 });
 
@@ -158,37 +207,139 @@ exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
 
 
 exports.loginUser = asyncErrorHandler(async (req, res) => {
-  console.log(req.body)
-  const { email, password } = req.body.email;
+  const { email, password } = req.body.email; // Expecting body to contain email and password
+  console.log('Login attempt with email:', email); // Logging the email used for login
 
+  // Validate inputs
   if (!email || !password) {
-    res.status(400).json({ message: 'Please enter email and password' });
-    return;
+    return res.status(400).json({ message: 'Please enter email and password' });
   }
 
+  // Find user by email and include the hashed password for comparison
   const user = await Workers.findOne({ email }).select('+password');
+  console.log('User retrieved:', user); // Logging user object
 
+  // Check if user exists
   if (!user) {
-    res.status(401).json({ message: "Sorry, we couldn't find an account with that email and password" });
-    return;
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 
+  // Compare provided password with stored hashed password
   const isPasswordMatched = await user.comparePassword(password);
+  console.log('Is password matched:', isPasswordMatched); // Logging comparison result
 
+  // Handle password mismatch
   if (!isPasswordMatched) {
-    res.status(401).json({ message: "Sorry, we couldn't find an account with that email and password" });
-    return;
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 
+  // Generate token for the user
   const token = user.generateToken();
-
-  // Create an object containing the token and additional user data
+  
   const responseData = {
     token,
-    user
+    user: {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      avatar: {
+        url: user.avatar.url,
+        public_id: user.avatar.public_id,
+      },
+    },
   };
-  res.status(200).json(responseData);
+
+  // Send response
+  return res.status(200).json(responseData);
 });
+
+
+
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ success: false, message: 'Email is required.' });
+    }
+
+    try {
+        const user = await Workers.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'No user with that email found.' });
+        }
+
+        // Generate reset token
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
+
+        await user.save({ validateBeforeSave: false });
+
+        const resetURL = `${req.protocol}://${req.get('host')}/resetPassword/${resetToken}`;
+        const html = `Click this link to reset your password: ${resetURL}`;
+        
+        const data = {
+          email: email,
+          html: html,
+          subject: 'Password Reset',
+        };
+
+        await sendEmail(data);
+        res.status(200).json({ success: true, message: 'Password reset link sent.' });
+    } catch (error) {
+        console.error('Error while processing forgotPassword:', error);
+        res.status(500).json({ success: false, message: 'Error while sending reset link.' });
+    }
+};
+
+
+
+exports.resetPassword = async (req, res) => {
+  const { token } = req.params; // Get the token from the request parameters
+  const { password } = req.body; // Get the new password from the request body
+
+  // console.debug('Received reset request with token:', token);
+  // console.debug('New password attempt:', password);
+
+  try {
+
+
+  const user = await Workers.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+    
+
+    if (!user) {
+      console.warn('Invalid or expired reset token for token:', token);
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+
+    
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+    
+    
+    // console.debug('User password updated successfully.' );
+    res.status(200).json({ 
+      message: 'Password has been reset successfully',
+     });
+
+  } catch (error) {
+    console.error('Error during password reset:', error);
+    res.status(500).json({ message: 'Failed to reset password', error: error.message });
+  }
+};
+
+
+
+
+
 
 
 
@@ -335,7 +486,6 @@ const updateWorkerChats = async (worker, chatId) => {
 
 
 
-
 exports.getAllChats = async (req, res) => {
   console.log(req.query)
   
@@ -420,7 +570,7 @@ requestData.message = `Your request from ${request.requesterName} has been rejec
 
 
 exports.isHaveARequests = asyncErrorHandler(async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   const { userId } = req.body
 const updatedRequestData = await  getMaterialsRequetsOfUsers(userId) 
 res.status(200).json({ requestData: updatedRequestData });
@@ -438,7 +588,7 @@ res.status(200).json({ requestData: updatedRequestData });
 
 exports.approveRequest = asyncErrorHandler(async (req, res) => {
   const { requestId } = req.body;
-  console.log('approved', requestId);
+  // console.log('approved', requestId);
 
   try {
     const updatedRequest = await MaterialRequest.findOneAndUpdate(
@@ -447,7 +597,7 @@ exports.approveRequest = asyncErrorHandler(async (req, res) => {
       { new: true } 
     );
 
-     console.log('updatedRequest:', updatedRequest)
+    //  console.log('updatedRequest:', updatedRequest)
     if (!updatedRequest) {
       return res.status(404).json({ message: 'Request not found or already approved.' });
     }
@@ -1087,29 +1237,9 @@ exports.editJobs = asyncErrorHandler(async (req, res) => {
 });;
 
 
-exports.changePassword = asyncErrorHandler(async (req, res) => {
-  const { id, newPassword } = req.body;
 
-  try {
-    // Find the user by ID
-    const user = await Workers.findById(id);
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
 
-    // Update the user's password
-    user.password = newPassword;
-
-    // Save the user with the new password
-    await user.save();
-
-    res.json({ message: 'Password changed successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
 
 
 

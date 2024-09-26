@@ -13,12 +13,15 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../SingIn/CustomIcons';
-import { registerUser } from '../../../actions/userAction';
+import { googleLogin, registerUser } from '../../../actions/userAction';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { signUpSchema } from '../../Auth/validationShemas';
 import { useNavigate } from 'react-router-dom';
 import CustomSnackbar from '../../Layouts/Snackbar';
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import useRedirectBasedOnRole from '../../../utils/redirect';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -51,10 +54,46 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   }),
 }));
 
+
+
+
+
+
+
+
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const RedirectBasedOnRole = useRedirectBasedOnRole()
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false); 
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
+
+ 
+  const googleSignUp = useGoogleLogin({
+    onSuccess: async (res) => {
+      console.log('Google login success:', res);
   
+      // Ensure correct extraction of access_token
+      const access_token = res.access_token;  // This should be the actual token, not an object
+  
+      try {
+        const res = await dispatch(googleLogin(access_token));
+        const { role } = res.user
+        console.log('role:', role);
+        if (res && res.success) {
+          RedirectBasedOnRole(role)
+        }
+      } catch (error) {
+        console.error('Error during Google sign-up:', error);
+      }
+    },
+    onFailure: (error) => console.error('Google login failed:', error),
+  });
+  
+  
+
+
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -62,27 +101,38 @@ export default function SignUp() {
       email: '',
       password: '',
       receiveUpdates: false,
+      avatar: { publicId: '', url: '' },
     },
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
       try {
         const res = await dispatch(registerUser(values));
-        if(res.status === "500" || !res.status.length > 0 ) {
-          alert(res.message);
-          alert(res.status);
-          // Alert the user about the error
-          // setAlert('Error signing up user. Please try again.');
-          // setAlertSeverity('error');
+        
+        if (res && res.success) {
+          const { role } = res.user;
+          RedirectBasedOnRole(role);
+        } else {
+          const message = res.message || 'Registration failed. Please try again.';
+          console.debug('error res: ', res);
+          setSnackbarMessage(message);
+          setSnackbarOpen(true);
+          setSnackbarSeverity('error');
         }
-        // navigate('/');
       } catch (error) {
-        console.error('Error signing up user:', error);
-        // Show alert for duplicate email address
-        // setAlert(`${error}`);
-        // setAlertSeverity('error');
+        const message = error.response?.data?.message || 'An unexpected error occurred. Please try again.';
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+        setSnackbarSeverity('error');
       }
     },
   });
+  
+  
+  
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
 
 
 
@@ -105,125 +155,134 @@ export default function SignUp() {
               >
                 Sign up
               </Typography>
-              <Box
-                component="form"
-                onSubmit={formik.handleSubmit}
-                sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-              >
-                <FormControl>
-                  <FormLabel htmlFor="name">Full name</FormLabel>
-                  <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  value={formik.values.firstName}
-                  onChange={formik.handleChange}
-                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-                  helperText={formik.touched.firstName && formik.errors.firstName}
-                />
-                </FormControl>
 
-                <FormControl>
-                  <FormLabel htmlFor="name">Full name</FormLabel>
-                  <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={formik.values.lastName}
-                  onChange={formik.handleChange}
-                  error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-                  helperText={formik.touched.lastName && formik.errors.lastName}
-                />
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <TextField
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="your@email.com"
-                  autoComplete="email"
-                  autoFocus
-                  required
-                  fullWidth
-                  variant="outlined"
-                  {...formik.getFieldProps('email')}
-                />
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <TextField
-                  required
-                  fullWidth
-                  placeholder="••••••"
-                  name="password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  error={formik.touched.password && Boolean(formik.errors.password)}
-                  helperText={formik.touched.password && formik.errors.password}
-                />
-                </FormControl>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive updates via email."
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                >
-                  Sign up
-                </Button>
-                <Typography sx={{ textAlign: 'center' }}>
-                  Already have an account?{' '}
-                  <span>
-                    <Link
-                      href="/material-ui/getting-started/templates/sign-in/"
-                      variant="body2"
-                      sx={{ alignSelf: 'center' }}
-                    >
-                      Sign in
-                    </Link>
-                  </span>
-                </Typography>
-              </Box>
+
+              <Box
+  component="form"
+  onSubmit={formik.handleSubmit} // ensure onSubmit is correctly set
+  sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+>
+  <FormControl>
+    <FormLabel htmlFor="name">First name</FormLabel>
+    <TextField
+      autoComplete="given-name"
+      name="firstName"
+      required
+      fullWidth
+      id="firstName"
+      value={formik.values.firstName}
+      onChange={formik.handleChange}
+      error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+      helperText={formik.touched.firstName && formik.errors.firstName}
+    />
+  </FormControl>
+
+  <FormControl>
+    <FormLabel htmlFor="name">Last name</FormLabel>
+    <TextField
+      required
+      fullWidth
+      id="lastName"
+      name="lastName"
+      autoComplete="family-name"
+      value={formik.values.lastName}
+      onChange={formik.handleChange}
+      error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+      helperText={formik.touched.lastName && formik.errors.lastName}
+    />
+  </FormControl>
+
+  <FormControl>
+    <FormLabel htmlFor="email">Email</FormLabel>
+    <TextField
+      error={formik.touched.email && Boolean(formik.errors.email)}
+      helperText={formik.touched.email && formik.errors.email}
+      value={formik.values.email}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      id="email"
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      autoComplete="email"
+      autoFocus
+      required
+      fullWidth
+      variant="outlined"
+      {...formik.getFieldProps('email')}
+    />
+  </FormControl>
+
+  <FormControl>
+    <FormLabel htmlFor="password">Password</FormLabel>
+    <TextField
+      required
+      fullWidth
+      placeholder="••••••"
+      name="password"
+      type="password"
+      id="password"
+      autoComplete="new-password"
+      value={formik.values.password}
+      onChange={formik.handleChange}
+      error={formik.touched.password && Boolean(formik.errors.password)}
+      helperText={formik.touched.password && formik.errors.password}
+    />
+  </FormControl>
+
+  <FormControlLabel
+    control={<Checkbox value="allowExtraEmails" color="primary" />}
+    label="I want to receive updates via email."
+  />
+
+  <Button type="submit" fullWidth variant="contained">
+    Sign up
+  </Button>
+</Box>
+
+
+
               <Divider>
                 <Typography sx={{ color: 'text.secondary' }}>or</Typography>
               </Divider>
+            
+
+
+              
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Button
-                  type="submit"
+                  type="button"
                   fullWidth
                   variant="outlined"
-                  onClick={() => alert('Sign up with Google')}
+                  onClick={googleSignUp}
                   startIcon={<GoogleIcon />}
                 >
                   Sign up with Google
                 </Button>
                 <Button
-                  type="submit"
+                  type="button"
                   fullWidth
                   variant="outlined"
-                  onClick={() => alert('Sign up with Facebook')}
+                  onClick={googleSignUp}
                   startIcon={<FacebookIcon />}
                 >
                   Sign up with Facebook
                 </Button>
               </Box>
+
+
+
             </Card>
           </Stack>
+
+          <CustomSnackbar 
+          open={snackbarOpen}
+          handleClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          message={snackbarMessage}
+      
+          />
+
         </SignUpContainer>
   );
 }

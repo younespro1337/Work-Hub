@@ -16,6 +16,9 @@
 Data.js
 
 # misc
+config.env
+package-lock.json
+.vscode
 .DS_Store
 .env.local
 .env.development.local

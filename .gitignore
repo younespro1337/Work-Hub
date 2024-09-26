@@ -4,13 +4,17 @@
 /node_modules
 /.pnp
 .pnp.js
+
 # testing
 /coverage
 config.env
 
-production
+# production
 /build
 /mongo-data
+.vscode/
+
+
 # misc
 .DS_Store
 .env.local

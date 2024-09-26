@@ -40,7 +40,7 @@ const WorkersSchema = new mongoose.Schema({
   nationalId: {
     type: String,
     required: false,
-    unique: true
+    
 },
   phoneNumber: {
     type: String,
@@ -72,6 +72,38 @@ const WorkersSchema = new mongoose.Schema({
       default:'https://cdnassets.hw.net/eb/31/777a1d784ee2a38d9a739146266d/adobestock-262235652-web.jpg'
     },
   },
+
+    // pro plan-specific fields
+    customDomain: {
+      type: String,
+      default: null
+    },
+    ownDatabase: {
+      type: Boolean,
+      default: false
+    },
+    advancedFeatures: {
+      type: Boolean,
+      default: false
+    },
+  
+
+  subscription: {
+    plan: {
+      type: String,
+      enum: ['not yet','free', 'medium', 'pro'],
+      default: 'not yet'
+    },
+    subscribedAt: {
+      type: Date,
+      default: Date.now
+    },
+    company: {
+      type: String,
+      default: null
+    }
+  },
+
   chats: [
     {
       chatId: {
@@ -122,6 +154,7 @@ WorkersSchema.methods.getJWTToken = function () {
 };
 
 
+
 WorkersSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
@@ -142,7 +175,7 @@ WorkersSchema.methods.getResetPasswordToken = async function () {
 };
 
 
-const Workers = mongoose.model('users', WorkersSchema);
+const Workers = mongoose.model('work-hub new users', WorkersSchema);
 
 module.exports = Workers;
 
