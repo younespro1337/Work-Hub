@@ -22,7 +22,7 @@ export const uploadFileToCloudinary = async (file) => {
 
   export const handleFileChange = async (event, SenderId) => {
     const files = event.target.files;
-    console.log(files);
+    // console.log(files);
   
     const selectedFile = files[0];
 
@@ -31,14 +31,14 @@ export const uploadFileToCloudinary = async (file) => {
     // Extract the SelectedMemberId from the memberDetails object
     const selectedMemberId = memberDetails._id;
   
-    console.log('Selected Member ID:', selectedMemberId);
+    // console.log('Selected Member ID:', selectedMemberId);
   
     if (selectedFile && selectedMemberId) {
       try {
         // Upload the single selected file to Cloudinary
         const cloudinaryResponse = await uploadFileToCloudinary(selectedFile);
 
-        console.log('Uploaded to Cloudinary:', cloudinaryResponse);
+        // console.log('Uploaded to Cloudinary:', cloudinaryResponse);
               let contentType;
 
               // Check if the format of the uploaded file is in the list of document formats
@@ -73,7 +73,7 @@ export const uploadFileToCloudinary = async (file) => {
 
         // Send the message with the data object
         const sendMessageResponse = await sendMessages(data);
-        console.log('Message sent:', sendMessageResponse);
+        // console.log('Message sent:', sendMessageResponse);
         
         return sendMessageResponse;
       } catch (error) {

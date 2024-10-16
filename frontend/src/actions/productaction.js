@@ -57,7 +57,7 @@ export const sendRequest = async (userId, materialId, requesterId) => {
       requesterId:requesterId
     }
     const { data } = await axios.post("/api/v1/material/request", requestData);
-    console.log(data); // add this line to log the data
+    // console.log(data); // add this line to log the data
     return data;
   } catch (error) {
     console.log(error.response.data.message);

@@ -74,7 +74,7 @@ export const googleLogin = (access_token) => async (dispatch) => {
       userData
     });
 
-    console.log(data)
+    // console.log(data)
     // Extract the token and user from the response
     const token = data.token;
     const user = data.user;
@@ -280,7 +280,7 @@ export async function getAllChats(memberSelected, userId) {
 export const handleSaveChanges = async (data) => {
   try {
     const response = await axios.post('/api/v1/editworker', data);
-    console.log('Data saved successfully:', response.data);
+    // console.log('Data saved successfully:', response.data);
   } catch (error) {
     console.error('Error saving data:', error);
   }
@@ -392,7 +392,7 @@ export const trackEmail = async () => {
     const response = await axios.get('/api/v1/track?id=younes Raymond');
 
     // Log the response from the server
-    console.log('Response from server:', response.data);
+    // console.log('Response from server:', response.data);
   } catch (error) {
     // Handle any errors that occur during the request
     console.error('Error:', error.message);

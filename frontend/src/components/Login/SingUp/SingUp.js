@@ -72,7 +72,7 @@ export default function SignUp() {
  
   const googleSignUp = useGoogleLogin({
     onSuccess: async (res) => {
-      console.log('Google login success:', res);
+      // console.log('Google login success:', res);
   
       // Ensure correct extraction of access_token
       const access_token = res.access_token;  // This should be the actual token, not an object
@@ -80,7 +80,7 @@ export default function SignUp() {
       try {
         const res = await dispatch(googleLogin(access_token));
         const { role } = res.user
-        console.log('role:', role);
+        // console.log('role:', role);
         if (res && res.success) {
           RedirectBasedOnRole(role)
         }

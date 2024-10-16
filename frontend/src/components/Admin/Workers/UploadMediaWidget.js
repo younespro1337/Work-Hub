@@ -46,7 +46,7 @@ const useOpenUploadWidget = ({ setTaskImages, setTaskVideos, setTaskDocuments })
             folder: 'ImagesLoopNode',
           },
           (error, result) => {
-            console.log('Upload widget result:', result);
+            // console.log('Upload widget result:', result);
             if (!error && result && result.event === 'success') {
               if (result.info.resource_type === 'image') {
                 const base64Data = result.info.thumbnail_url;

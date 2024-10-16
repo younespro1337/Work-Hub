@@ -16,7 +16,7 @@ const ErrorHandler = require("../utils/errorHandler");
 
 // Create material ---ADMIN
 exports.createProduct = asyncErrorHandler(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { name, description, stock, image, category, publicId } = req.body;
   try {
     const material = await Material.create({
@@ -51,7 +51,7 @@ exports.createProduct = asyncErrorHandler(async (req, res, next) => {
 
 // get all materials from db and send it to the client side  
 exports.getProducts = asyncErrorHandler(async (req, res, next) => {
-  console.log('line 45 getProducts:', req.body)
+  // console.log('line 45 getProducts:', req.body)
   try {
     const products = await Material.find();
     // console.log(products)
@@ -98,7 +98,7 @@ const userId = req.query.userId;
 
 
 exports.updateUserTakenInfo = async (req, res) => {
-  console.log('updateuserTaken line 90:', req.body, 'params:', req.params);
+  // console.log('updateuserTaken line 90:', req.body, 'params:', req.params);
   const { userIdLS } = req.body;
   const { productId } = req.params;
 
@@ -160,7 +160,7 @@ exports.updateUserTakenInfo = async (req, res) => {
 
 
 exports.createMaterialRequest = asyncErrorHandler(async (req, res, next) => {
-  console.log('create material Request:',req.body)
+  // console.log('create material Request:',req.body)
   try {
     const { userId, materialId, requesterId } = req.body;
    
@@ -170,7 +170,7 @@ exports.createMaterialRequest = asyncErrorHandler(async (req, res, next) => {
     const material = await Material.findById(materialId);
     
     if (!requester) {
-      console.log('Requester not found in the workers array.');
+      // console.log('Requester not found in the workers array.');
       return res.status(400).json({ message: 'Requester not found in the workers array.' });
     }
 
@@ -185,7 +185,7 @@ exports.createMaterialRequest = asyncErrorHandler(async (req, res, next) => {
 
 
     if (existingRequest) {
-      console.log('A pending request already exists for this user_of_Taken.');
+      // console.log('A pending request already exists for this user_of_Taken.');
       return res.status(400).json({ message: 'A pending request already exists for this user_of_Taken.' });
     }
      
@@ -270,7 +270,7 @@ exports.searchProducts = asyncErrorHandler(async (req, res, next) => {
 exports.updateGeolocation = asyncErrorHandler(async (req, res, next) => {
   // console.log(req.body);
   const { latitude, longitude, userIdLS, materialId } = req.body;
-  console.log("Update material:id:", materialId);
+  // console.log("Update material:id:", materialId);
   try {
     if (!materialId) {
       console.log('Invalid materialId:', materialId);
@@ -290,15 +290,15 @@ exports.updateGeolocation = asyncErrorHandler(async (req, res, next) => {
           user.latitude = latitude;
           user.longitude = longitude;
           await material.save(); // Save the changes to the material document
-          console.log('User location updated:', user);
+          // console.log('User location updated:', user);
         } else {
-          console.log('User location already up to date:', user);
+          // console.log('User location already up to date:', user);
         }
       } else {
-        console.log('User not found for the given userIdLS:', userIdLS);
+        // console.log('User not found for the given userIdLS:', userIdLS);
       }
     } else {
-      console.log('Material not found for the given materialId:', materialId);
+      // console.log('Material not found for the given materialId:', materialId);
     }
   } catch (error) {
     console.error('Error updating user location:', error);
@@ -309,7 +309,7 @@ exports.updateGeolocation = asyncErrorHandler(async (req, res, next) => {
 
 
 exports.updateGeolocationByIp = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const myApiKey = '6c105f5d9e926dc7f86df2da63b2e5f3';
 
   if (req.body.ipAddress) {
@@ -318,7 +318,7 @@ exports.updateGeolocationByIp = async (req, res) => {
     
     try {
       const response = await axios.get(url);
-      console.log("lat & lon response: ", response.data);
+      // console.log("lat & lon response: ", response.data);
       
       return res.json(response.data);
     } catch (error) {
@@ -342,10 +342,10 @@ exports.updateGeolocationByIp = async (req, res) => {
       .then((updatedMaterial) => {
         // console.log(updatedMaterial);
         if (updatedMaterial) {
-          console.log('Geolocation updated successfully');
+          // console.log('Geolocation updated successfully');
           res.json({ latitude, longitude }); // Send latitude and longitude in the response
         } else {
-          console.log('Material not found or user not authorized');
+          // console.log('Material not found or user not authorized');
           res.status(404).json({ message: 'Material not found or user not authorized' });
         }
       })
@@ -364,7 +364,7 @@ exports.updateGeolocationByIp = async (req, res) => {
 
 
 exports.deleteMaterial = asyncErrorHandler(async (req, res) => {
-  console.log('params:',req.params)
+  // console.log('params:',req.params)
   try {
     const { id } = req.params;
     await Material.findByIdAndRemove(id);
@@ -380,7 +380,7 @@ exports.deleteMaterial = asyncErrorHandler(async (req, res) => {
 
 
 exports.editMaterials = asyncErrorHandler(async (req, res) => {
-  console.log('i got it req', req.body); 
+  // console.log('i got it req', req.body); 
   const { id, field, value } = req.body;
 
   try {

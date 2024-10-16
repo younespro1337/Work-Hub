@@ -24,7 +24,7 @@ const MaterialsGridComponent = ({materials, loading, updateMaterials}) => {
     const handleDelete = async (id) => {
         try {
             const { data } = await axios.delete(`/api/v1/material/${id}`);
-            console.log('materials:', data);
+            // console.log('materials:', data);
             updateMaterials(data.materials);
             handleCloseDeleteDialog();
         } catch (error) {
@@ -66,7 +66,7 @@ const MaterialsGridComponent = ({materials, loading, updateMaterials}) => {
     const handleSaveChanges = async (data) => { 
         try {
             const response = await axios.post('/api/v1/editMaterials', data);
-            console.log('Data saved successfully:', response.data);
+            // console.log('Data saved successfully:', response.data);
         } catch (error) {
             console.error('Error saving data:', error);
         }

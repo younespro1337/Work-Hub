@@ -28,7 +28,7 @@ const JobsDataGrid = ({ jobs, loading, updateJobsData }) => {
   const handleSaveChanges = async (data) => {
     try {
       const response = await axios.post('/api/v1/editJobs', data);
-      console.log('Data saved successfully:', response.data);
+      // console.log('Data saved successfully:', response.data);
     } catch (error) {
       console.error('Error saving data:', error);
     }
@@ -44,7 +44,7 @@ const JobsDataGrid = ({ jobs, loading, updateJobsData }) => {
         setSnackbarMessage("Job Deleted successfully!");
         setSnackbarOpen(true);
       } else {
-        console.log(res.data.message);
+        // console.log(res.data.message);
       }
     } catch (error) {
       console.log(error);

@@ -37,7 +37,7 @@ export const DataGridComponent = ({
         try {
             const data = await handleDeleteWorker(deleteId);
             if (data.success) {
-                console.log('workers:', data.users);
+                // console.log('workers:', data.users);
                 const message = data.message;
                 updateWorkers(deleteId, message);
                 handleCloseDeleteDialog();

@@ -39,7 +39,7 @@ const MainData = () => {
 
         
         const tasksResponse = await fetchTasks();
-        console.log(tasksResponse)
+        // console.log(tasksResponse)
 
         setTasks(tasksResponse.data); 
       } catch (error) {

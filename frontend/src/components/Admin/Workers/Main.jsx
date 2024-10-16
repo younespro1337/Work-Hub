@@ -49,7 +49,7 @@ useEffect(() => {
   const fetchWorkers = async () => {
     try {
       const data = await getAllUsers();
-       console.log(data.users)
+      //  console.log(data.users)
        const updatedRows = fetchWorkersData(data.users);
       if (isMounted) {
         setWorkers(updatedRows);
@@ -71,7 +71,7 @@ useEffect(() => {
 
 
 const updateWorkers = (updatedWorkerIds, message) => {
-  console.log('updateWorkerid:', updatedWorkerIds, 'updateWorkerMessage:', message);
+  // console.log('updateWorkerid:', updatedWorkerIds, 'updateWorkerMessage:', message);
   const updatedWorkers = workers.filter(worker => worker.id !== updatedWorkerIds);
   setWorkers(updatedWorkers);
   setSelectedWorkerIds(updatedWorkerIds);

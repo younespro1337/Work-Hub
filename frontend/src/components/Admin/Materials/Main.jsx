@@ -30,11 +30,11 @@ const Main = () => {
         const fetchMaterials = async () => {
             try {
                 const data = await getProducts();
-                console.log(data);
+                // console.log(data);
 
                 if (data.success) {
                     const updatedRows = fetchMaterialsData(data.products);
-                    console.log(updatedRows);
+                    // console.log(updatedRows);
                     setMaterials(updatedRows);
                     setLoading(false);
                 } else {

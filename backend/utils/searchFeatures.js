@@ -1,6 +1,6 @@
 class SearchFeatures {
     constructor(query, queryString) {
-        console.log(query)
+        // console.log(query)
         this.query = query
         this.queryString = queryString
     }
@@ -13,7 +13,7 @@ class SearchFeatures {
             }
         } : {};
 
-        console.log(keyword);
+        // console.log(keyword);
 
         this.query = this.query.find({ ...keyword });
         return this;

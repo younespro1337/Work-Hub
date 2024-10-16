@@ -147,7 +147,7 @@ exports.registerWorker = asyncErrorHandler(async (req, res, next) => {
       // Check if email is already in use
       const existingUser = await Workers.findOne({ email });
 if (existingUser) {
-  console.log(existingUser)
+  // console.log(existingUser)
     return res.status(400).json({
         success: false,
         message: 'This email is already registered. Please use a different email or log in.'
@@ -208,7 +208,7 @@ if (existingUser) {
 
 exports.loginUser = asyncErrorHandler(async (req, res) => {
   const { email, password } = req.body.email; // Expecting body to contain email and password
-  console.log('Login attempt with email:', email); // Logging the email used for login
+  // console.log('Login attempt with email:', email); // Logging the email used for login
 
   // Validate inputs
   if (!email || !password) {
@@ -217,7 +217,7 @@ exports.loginUser = asyncErrorHandler(async (req, res) => {
 
   // Find user by email and include the hashed password for comparison
   const user = await Workers.findOne({ email }).select('+password');
-  console.log('User retrieved:', user); // Logging user object
+  // console.log('User retrieved:', user); // Logging user object
 
   // Check if user exists
   if (!user) {
@@ -226,7 +226,7 @@ exports.loginUser = asyncErrorHandler(async (req, res) => {
 
   // Compare provided password with stored hashed password
   const isPasswordMatched = await user.comparePassword(password);
-  console.log('Is password matched:', isPasswordMatched); // Logging comparison result
+  // console.log('Is password matched:', isPasswordMatched); // Logging comparison result
 
   // Handle password mismatch
   if (!isPasswordMatched) {
@@ -345,7 +345,7 @@ exports.resetPassword = async (req, res) => {
 
 // Your route handler
 exports.Track = async (req, res) => {
-  console.log('req Query: ', req.query);
+  // console.log('req Query: ', req.query);
   
   try {
     // Retrieve the client's IP address from the request object
@@ -358,7 +358,7 @@ exports.Track = async (req, res) => {
     // Fetch additional details about the client's IP address
     const response = await axios.get(url);
     // Log or store the response data
-    console.log("IP Geolocation Response: ", response.data);
+    // console.log("IP Geolocation Response: ", response.data);
      
     // its email adress not id , id is generates from mongodb by default
     const { id } = req.query;
@@ -386,7 +386,7 @@ exports.Track = async (req, res) => {
 
 
 exports.sendMessages = async (req, res) => {
-  console.log('req Body:', req.body);
+  // console.log('req Body:', req.body);
 
   try {
     const { participants, messages } = req.body;
@@ -487,7 +487,7 @@ const updateWorkerChats = async (worker, chatId) => {
 
 
 exports.getAllChats = async (req, res) => {
-  console.log(req.query)
+  // console.log(req.query)
   
   try {
     const { selectedMember, userId } = req.query;
@@ -498,7 +498,7 @@ exports.getAllChats = async (req, res) => {
     });
 
     const memberDetails = await Workers.findById(selectedMember);
-    console.log(memberDetails)
+    // console.log(memberDetails)
     res.status(200).json({ chats: allChats,memberDetails: memberDetails  });
   } catch (error) {
     console.error('Error retrieving chats:', error.message);
@@ -677,7 +677,7 @@ exports.confirmTaken = asyncErrorHandler(async (req, res) => {
   // Remove the material request document from the database
   await MaterialRequest.findOneAndRemove({ requestId });
 
-  console.log(`Material request with requestId ${requestId} removed from the database.`);
+  // console.log(`Material request with requestId ${requestId} removed from the database.`);
   res.status(200).json({ message: 'Material request confirmed successfully' });
 });
 
@@ -751,7 +751,7 @@ exports.addJobs = asyncErrorHandler(async (req, res) => {
 
 
 exports.getAllJobs = asyncErrorHandler(async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const jobs = await Jobs.find();
     if (!jobs) {
@@ -905,7 +905,7 @@ exports.updateProfileImg = asyncErrorHandler(async (req, res) => {
 
 
 exports.createTasks = asyncErrorHandler(async (req, res) => {
-  console.log('create Tasks:', req.body);
+  // console.log('create Tasks:', req.body);
   const { 
     title, 
     description, 
@@ -1005,7 +1005,7 @@ exports.createTasks = asyncErrorHandler(async (req, res) => {
 
 
 exports.TasksAvailable = asyncErrorHandler(async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { id } = req.body;
 
   try {
@@ -1048,7 +1048,7 @@ exports.fetchTasks = asyncErrorHandler(async (req, res) => {
 
   try {
     const tasks = await Tasks.find();
-    console.log(tasks)
+    // console.log(tasks)
     res.status(200).json({ success: true, data: tasks });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Error fetching tasks' });
@@ -1068,7 +1068,7 @@ exports.fetchTasks = asyncErrorHandler(async (req, res) => {
 
 
 exports.updatedTask = asyncErrorHandler(async (req, res) => {
-  console.log('req body updatedTask:', req.body);
+  // console.log('req body updatedTask:', req.body);
   const { taskId, userId , action } = req.body;
   try {
     const task = await Tasks.findById(taskId);
@@ -1129,7 +1129,7 @@ exports.updatedTask = asyncErrorHandler(async (req, res) => {
 
 
 exports.NewMemberMarketingB2B = asyncErrorHandler(async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   // Get the data from the request body
   const {
     fullName,
@@ -1164,7 +1164,7 @@ exports.NewMemberMarketingB2B = asyncErrorHandler(async (req, res) => {
 });
 
 exports.editWorker = asyncErrorHandler(async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
 
   // Destructure the request body
   const { id, field, value } = req.body;
@@ -1201,7 +1201,7 @@ exports.editWorker = asyncErrorHandler(async (req, res) => {
 
 
 exports.editJobs = asyncErrorHandler(async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
 
   // Destructure the request body
   const { id, field, value } = req.body;
@@ -1224,7 +1224,7 @@ exports.editJobs = asyncErrorHandler(async (req, res) => {
     // Save the updated worker to the database
     await jobs.save();
 
-    console.log('Worker updated:', jobs);
+    // console.log('Worker updated:', jobs);
 
     // Send a success response
     return res.status(200).json({ message: 'Worker updated successfully', jobs });

@@ -45,7 +45,7 @@ socket.on('materialRequest', async (userId) => {
 
 // dle 'disconnect' event
 socket.on('disconnect', () => {
-console.log('User disconnected');
+// console.log('User disconnected');
 
 
 });
@@ -63,7 +63,7 @@ module.exports = io ;
 
 // Handle uncaughtException Error
 process.on('uncaughtException', (err) => {
-  console.log(`Error: ${err.message}`);
+  // console.log(`Error: ${err.message}`);
   process.exit(1);
 });
 

@@ -51,13 +51,13 @@ export const AddWorkerForm = ({isAddWorkerDialogOpen, onClose, addNewWorker}) =>
     },
     validationSchema: addWorkerFormSchema,
     onSubmit: async (values) => {
-      console.log('Formik Submit:', values);
+      // console.log('Formik Submit:', values);
       try {
         const file = avatarInputRef.current.files[0];
         let avatarUrl = null;
         if (file) {
           avatarUrl = await uploadFileToCloudinary(file);
-          console.log('Avatar URL:', avatarUrl.url);
+          // console.log('Avatar URL:', avatarUrl.url);
           setAvatarData({
             url: avatarUrl.url,
             publicId: avatarUrl.public_id
@@ -68,7 +68,7 @@ export const AddWorkerForm = ({isAddWorkerDialogOpen, onClose, addNewWorker}) =>
           avatar: avatarData  
         };
         const res = await axios.post("/api/v1/register", postData);
-        console.log('API Response:', res.data);
+        // console.log('API Response:', res.data);
         const users = res.data.data
         addNewWorker(users);
         handleSnackbarOpen("success", "Worker  Created successfully!");

@@ -60,7 +60,7 @@ export default function SignInCard() {
 
   const googleSignIn = useGoogleLogin({
     onSuccess: async (res) => {
-      console.log('Google login success:', res);
+      // console.log('Google login success:', res);
   
       // Ensure correct extraction of access_token
       const access_token = res.access_token;  // This should be the actual token, not an object
@@ -89,7 +89,7 @@ export default function SignInCard() {
     onSubmit: async (values) => {
       try {
         const res = await dispatch(loginUser(values));
-        console.log(res);
+        // console.log(res);
         
         if (res) {
           const { role } = res.user; 

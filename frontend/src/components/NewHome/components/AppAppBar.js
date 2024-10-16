@@ -65,7 +65,7 @@ export default function AppAppBar({ testimonialsRef, featuresRef, highlightsRef,
 
 
   useSocket("materialRequestsUpdate", (data) => {
-    console.log('socket data:', data);
+    // console.log('socket data:', data);
     });
 
 
@@ -77,7 +77,7 @@ export default function AppAppBar({ testimonialsRef, featuresRef, highlightsRef,
       socket.emit('materialRequest', userId);
       const data = await hanldeFetchRequets({userId})
       setRequestData(data.requestData);
-      console.log(data.requestData);
+      // console.log(data.requestData);
       // setNotificationCount(data.requestData.requests.length);
 }
     }

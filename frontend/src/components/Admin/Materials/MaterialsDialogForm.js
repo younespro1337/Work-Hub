@@ -55,14 +55,14 @@ const MaterialsFormDialog = ({  isAddMaterialsDialogOpen, onClose, updateMateria
     },
     validationSchema: addMaterialsSchema,
     onSubmit: async (values) => {
-      console.log('Formik Submit:', values);
+      // console.log('Formik Submit:', values);
       try {
         const file = avatarInputRef.current.files[0];
         let image = null;
         let publicId = null;
         if (file) {
           const uploadResponse = await uploadFileToCloudinary(file);
-          console.log('Material Image URL:', uploadResponse);
+          // console.log('Material Image URL:', uploadResponse);
           image = uploadResponse.url;
           publicId = uploadResponse.public_id;
         }
@@ -74,7 +74,7 @@ const MaterialsFormDialog = ({  isAddMaterialsDialogOpen, onClose, updateMateria
         };
     
         const res = await axios.post("/api/v1/admin/material/new", postData);  
-        console.log('API Response:', res.data);
+        // console.log('API Response:', res.data);
         const newMaterial = res.data.allMaterials;
         updateMaterials(newMaterial);
         handleSnackbarOpen("success", "Material Created successfully!");

@@ -24,7 +24,7 @@ function Notifications({ open, close, requestData }) {
   const [anchorEl, setAnchorEl] = useState(null);
   useEffect(() => {
     socket.on('materialRequestsUpdate', (data) => {
-      console.log('materialRequestsUpdate', data);
+      // console.log('materialRequestsUpdate', data);
     });
 
     return () => {
@@ -171,6 +171,7 @@ const notificationCount = 90;
             ))}
           </List>
         </Paper>
+
       </Popover>
 
       <CustomSnackbar

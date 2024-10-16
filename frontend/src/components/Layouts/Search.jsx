@@ -78,11 +78,11 @@ const Search = () => {
           const parsedData = JSON.parse(storedData);
           setFilteredMaterials(parsedData.materials || []);
           setFilteredUsers(parsedData.users || []);
-          console.log(parsedData.users)
+          // console.log(parsedData.users)
           setFilteredJobs(parsedData.Jobs || []);
         }
       } catch (error) {
-        console.log('there no resul in localStorage in Search Component', error)
+        // console.log('there no resul in localStorage in Search Component', error)
       } finally {
         setLoading(false)
       }
@@ -102,12 +102,12 @@ const Search = () => {
   const name = user.name;
   const userIdLS = localStorage.getItem('userIdLS');
   const destination = 'morocco';
-    console.log('handle open close', materialId, userId);
+    // console.log('handle open close', materialId, userId);
     if (name && destination && email && userIdLS && userId_of_Taken) {
       alert('yes ')
       try {
         const response = await sendRequest(materialId, name, destination, email, userIdLS, userId_of_Taken)
-      console.log('this is the response: ', response);
+      // console.log('this is the response: ', response);
     } catch(error) {
       console.log(error);
     }

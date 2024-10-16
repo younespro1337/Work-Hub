@@ -12,7 +12,7 @@ const useGaTracker = () => {
         try {
             ReactGA.initialize(measurementId);
             setInitialized(true);
-            console.log("Google Analytics initialized successfully.");
+            // console.log("Google Analytics initialized successfully.");
 
         } catch (error) {
             console.error("Error initializing Google Analytics:", error);
@@ -28,7 +28,7 @@ const useGaTracker = () => {
             page: location.pathname +  location.search,
             title: document.title,
           });
-          console.log(`Tracked page view: ${location.pathname + location.search}`);
+          // console.log(`Tracked page view: ${location.pathname + location.search}`);
       } catch (error) {
         
       }

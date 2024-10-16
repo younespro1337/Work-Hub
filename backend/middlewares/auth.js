@@ -8,8 +8,8 @@ const asyncErrorHandler = require('./asyncErrorHandler');
 
 
 exports.isAuthenticatedUser = asyncErrorHandler(async (req, res, next) => {
-    console.log(req.body)
-     console.log(req.cookies);
+    // console.log(req.body)
+    //  console.log(req.cookies);
     
     const { token } = req.cookies;
 
@@ -23,7 +23,7 @@ exports.isAuthenticatedUser = asyncErrorHandler(async (req, res, next) => {
     }
 
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decodedData);
+    // console.log(decodedData);
     req.user = await User.findById(decodedData.id);
     next();
 });
