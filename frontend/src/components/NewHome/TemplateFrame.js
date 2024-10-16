@@ -35,67 +35,63 @@ function TemplateFrame({
   toggleColorMode,
   children,
 }) {
+
+  const [isOpenToolBar, setIsOpenToolBar]  = React.useState(false);
+
+
   const handleChange = (event) => {
     toggleCustomTheme(event.target.value === 'custom');
   };
+  
   const MPTheme = createTheme(getMPTheme(mode));
 
   return (
+    
     <ThemeProvider theme={MPTheme}>
       <Box sx={{ height: '100dvh', display: 'flex', flexDirection: 'column' }}>
-        <StyledAppBar>
-          <Toolbar
-            variant="dense"
-            disableGutters
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '100%',
-              p: '8px 12px',
-            }}
-          >
-            {/* <Button
-              variant="text"
-              size="small"
-              aria-label="Back to templates"
-              startIcon={<ArrowBackRoundedIcon />}
-              component="a"
-              href="/material-ui/getting-started/templates/"
-              sx={{ display: { xs: 'none', sm: 'flex' } }}
-            >
-              Back to templates
-            </Button>
-            <IconButton
-              size="small"
-              aria-label="Back to templates"
-              component="a"
-              href="/material-ui/getting-started/templates/"
-              sx={{ display: { xs: 'auto', sm: 'none' } }}
-            >
-              <ArrowBackRoundedIcon />
-            </IconButton> */}
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <FormControl variant="outlined" sx={{ minWidth: 180 }}>
-                <Select
-                  size="small"
-                  labelId="theme-select-label"
-                  id="theme-select"
-                  value={showCustomTheme ? 'custom' : 'material'}
-                  onChange={handleChange}
-                  label="Design Language"
-                >
-                  <MenuItem value="custom">Custom Theme</MenuItem>
-                  <MenuItem value="material">Material Design 2</MenuItem>
-                </Select>
-              </FormControl>
-              <ToggleColorMode
-                data-screenshot="toggle-mode"
-                mode={mode}
-                toggleColorMode={toggleColorMode}
-              />
-            </Box>
-          </Toolbar>
-        </StyledAppBar>
+       
+{isOpenToolBar && (
+  <StyledAppBar>
+  <Toolbar
+    variant="dense"
+    disableGutters
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+      p: '8px 12px',
+    }}
+  >
+    <Box sx={{ display: 'flex', gap: 1 }}>
+      <FormControl variant="outlined" sx={{ minWidth: 180 }}>
+        <Select
+          size="small"
+          labelId="theme-select-label"
+          id="theme-select"
+          value={showCustomTheme ? 'custom' : 'material'}
+          onChange={handleChange}
+          label="Design Language"
+        >
+          <MenuItem value="custom">Custom Theme</MenuItem>
+          <MenuItem value="material">Material Design 2</MenuItem>
+        </Select>
+      </FormControl>
+      <ToggleColorMode
+        data-screenshot="toggle-mode"
+        mode={mode}
+        toggleColorMode={toggleColorMode}
+      />
+    </Box>
+  </Toolbar>
+</StyledAppBar>
+)}
+
+  
+      
+
+
+
+
         <Box sx={{ flex: '1 1', overflow: 'auto' }}>{children}</Box>
       </Box>
     </ThemeProvider>

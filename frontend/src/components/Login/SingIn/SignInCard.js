@@ -20,7 +20,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signInSchema } from '../../Auth/validationShemas';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
-import useRedirectBasedOnRole from '../../../utils/redirect';
+import useRedirectBasedOnRole from '../../../hooks/redirect';
 import CustomSnackbar from '../../Layouts/Snackbar';
 
 const Card = styled(MuiCard)(({ theme }) => ({

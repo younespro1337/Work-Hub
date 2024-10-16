@@ -13,14 +13,11 @@ import axios from 'axios';
 
 
 const ProfileHeader = () => {
-  const Ruser = useSelector(state => state.user);
+  const  { avatar, email , firstName, lastName, _id} = useSelector(state => state.user.user);
   const [selectedFile, setSelectedFile] = useState(null);
   const dispatch  = useDispatch()
-  const [user, setUser] = useState(null); 
 
-  useEffect(() => {
-     setUser(Ruser.user)
-  }, [])
+ 
 
   
   const handleImageUpload = async (event) => {
@@ -31,7 +28,7 @@ const ProfileHeader = () => {
       const imageData = await uploadFileToCloudinary(file);
       const data = {
         imageData: imageData,
-        userId: Ruser._id,
+        userId: _id,
       };
   
       dispatch({ type: UPDATE_PROFILE_REQUEST });
@@ -74,9 +71,9 @@ const ProfileHeader = () => {
   return (
     <div className="wrap-help">
       <div className="profile-cover">
-        <img src={user?.avatar?.url} alt="" className='cover-img' />
+        <img src={avatar?.url ||"https://www.google.com/url?sa=i&url=https%3A%2F%2Fbuffer.com%2Flibrary%2Fbest-profile-picture-science-research-psychology%2F&psig=AOvVaw3UP7PxRyZeAVpJHKhkOctR&ust=1728415312776000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJivno7__IgDFQAAAAAdAAAAABAE"} alt="" className='cover-img' />
         <div className="profile-circle">
-          <img src={user?.avatar?.url} alt="" /> 
+          <img src={avatar?.url || "https://www.google.com/url?sa=i&url=https%3A%2F%2Fbuffer.com%2Flibrary%2Fbest-profile-picture-science-research-psychology%2F&psig=AOvVaw3UP7PxRyZeAVpJHKhkOctR&ust=1728415312776000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJivno7__IgDFQAAAAAdAAAAABAE"} alt="" /> 
         </div>
         <div className="edit-btn">
           <label htmlFor="fileInput">
@@ -90,9 +87,6 @@ const ProfileHeader = () => {
             onChange={handleImageUpload}
           />
         </div>
-      </div>
-      <div className="name">
-        {/* {user?.firstName} */}
       </div>
     </div>
   );

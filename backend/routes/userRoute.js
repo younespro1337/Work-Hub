@@ -31,21 +31,15 @@ const {
 
 } = require('../controllers/userController');
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
-const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
-// Rate Limiting
-const defaultLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: 'Too many login attempts, please try again later.'
-});
+
 
 router.post('/register', registerWorker);
-router.post('/login', defaultLimiter,  loginUser);
+router.post('/login',  loginUser);
 router.post('/oauth/google', googleLogin);
-router.post('/resetPassword/:token', defaultLimiter,resetPassword);
+router.post('/resetPassword/:token', resetPassword);
 router.route('/admin/users').get(isAuthenticatedUser, authorizeRoles('admin'), getAllUsers);
 router.post('/approve', approveRequest);
 router.post('/reject', rejectRequest);

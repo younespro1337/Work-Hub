@@ -13,29 +13,29 @@ import { SitemarkIcon } from './CustomIcons';
 const items = [
   {
     icon: <SettingsSuggestRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Adaptable performance',
+    title: 'Effortless Team & Resource Management',
     description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+      'Centralize your operations with intuitive tools to manage your team and materials—boost efficiency and focus on growth.',
   },
   {
     icon: <ConstructionRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Built to last',
+    title: 'Seamless Task Tracking & Payments',
     description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
+      'Automate monthly payments and stay on top of tasks effortlessly. Never miss a deadline or payment cycle again.',
   },
   {
     icon: <ThumbUpAltRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Great user experience',
+    title: 'Data-Driven Decisions with Powerful Insights',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+      'Leverage advanced analytics and visual charts to unlock deep insights, driving smarter decisions for your business.',
   },
   {
     icon: <AutoFixHighRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Innovative functionality',
+    title: 'Fully Customizable & Scalable Solutions',
     description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+      'Tailor the platform to your unique needs with Pro plan features. From job posting to team collaboration, we scale with your business.',
   },
-];
+]
 
 export default function Content() {
   return (

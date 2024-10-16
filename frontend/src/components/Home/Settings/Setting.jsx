@@ -14,8 +14,6 @@ import {
   DialogActions,
   Button,
   TextField,
-
-
 } from '@mui/material';
 import axios from 'axios';
 import { useMediaQuery } from '@mui/material';
@@ -39,9 +37,6 @@ function SettingsComponent() {
   const [newPassword, setNewPassword ] = useState('')
   const [confirmPassword, setConfirmPassword ] = useState('')
  
-
-
-
  
  const passwordShema = Yup.object().shape({
    newPassword: Yup.string()
@@ -171,6 +166,7 @@ const handleCloseChangePasswordDialog = () => {
   }
   
 
+
   // Load the hideNav value from localStorage on component mount
   useEffect(() => {
     const hideNav = localStorage.getItem('hideNav');
@@ -190,7 +186,9 @@ const handleCloseChangePasswordDialog = () => {
     setHideNavigationMenu(!hideNavigationMenu);
   };
 
-  return (
+
+  return (  
+    <div style={{marginTop:'8rem'}}>
     <Container maxWidth="md">
       <Paper elevation={3} style={paperStyle}>
         <Typography variant="h5" gutterBottom>
@@ -341,6 +339,8 @@ const handleCloseChangePasswordDialog = () => {
 
 
     </Container>
+    </div>
+
   );
   
 }

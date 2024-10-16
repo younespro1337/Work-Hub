@@ -17,16 +17,21 @@ import {
   Avatar,
   MenuItem,
   Menu,
+  TextField,
+  ListItemIcon
 } from "@mui/material/";
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import { Settings, ExitToApp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MailIcon from "@mui/icons-material/Mail";
+import Notifications from "./Notifications"; 
+import { hanldeFetchRequets } from "../../../actions/userAction";
+import { useSocket } from '../../../actions/socketService';
+import openSocket from 'socket.io-client';
 
-// Import extracted components
-// import ProfileMenu from './ProfileMenu'; // New ProfileMenu component
-import Notifications from "../../Home/Header/Notifications"; // New Notifications component
+
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -42,21 +47,55 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: "8px 12px",
 }));
 
-export default function AppAppBar() {
+
+export default function AppAppBar({ testimonialsRef, featuresRef, highlightsRef, pricingRef, faqRef}) {
+  const socket = openSocket('http://localhost:5000');
   const [open, setOpen] = React.useState(false);
-  const Ruser = useSelector((state) => state.user.user);
-  const AvatarUrl = Ruser?.avatar?.url;
-  const [avatarUrl, setAvatarUrl] = React.useState(AvatarUrl);
+  const {avatar , firstName, lastName, _id} = useSelector((state) => state.user.user);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [notificationDialogOpen, setNotificationDialogOpen] =
-    React.useState(false);
+  const [notificationDialogOpen, setNotificationDialogOpen] = React.useState(false);
   const [requestData, setRequestData] = React.useState([]);
+  const [searchOpen, setSearchOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [notificationCount,setNotificationCount] = React.useState(0);
 
+
+  useSocket("materialRequestsUpdate", (data) => {
+    console.log('socket data:', data);
+    });
+
+
+
+  React.useEffect( () => {
+    const fetchRequets = async () => {
+ if (_id) {
+      const userId = _id;
+      socket.emit('materialRequest', userId);
+      const data = await hanldeFetchRequets({userId})
+      setRequestData(data.requestData);
+      console.log(data.requestData);
+      // setNotificationCount(data.requestData.requests.length);
+}
+    }
+    fetchRequets()
+  }, [_id]);
+
+
+
+  const scrollToSection = (ref) => {
+    if (ref && ref.current) {
+      console.log('Scrolling to section:', ref.current); 
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      console.error('Ref not found:', ref); 
+    }
+  };
+
+  
   const ProfileMenu = ({
     anchorEl,
     isMenuOpen,
@@ -69,22 +108,60 @@ export default function AppAppBar() {
       id="primary-profile-menu"
       open={isMenuOpen}
       onClose={handleMenuClose}
+      PaperProps={{
+        elevation: 4,
+        style: {
+          borderRadius: '8px',
+          padding: '8px 0',
+          minWidth: '200px',
+        },
+      }}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <Button component={Link} to="/profile" color="inherit">
+      <MenuItem onClick={handleMenuClose} sx={{ padding: "10px 20px" }}>
+        <ListItemIcon>
+          <AccountCircle fontSize="small" />
+        </ListItemIcon>
+        <Button
+          component={Link}
+          to="/profile"
+          color="inherit"
+          sx={{ justifyContent: "flex-start", textTransform: "none" }}
+        >
           Profile
         </Button>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Button component={Link} to="/settings" color="inherit">
+  
+      <MenuItem onClick={handleMenuClose} sx={{ padding: "10px 20px" }}>
+        <ListItemIcon>
+          <Settings fontSize="small" />
+        </ListItemIcon>
+        <Button
+          component={Link}
+          to="/settings"
+          color="inherit"
+          sx={{ justifyContent: "flex-start", textTransform: "none" }}
+        >
           Settings
         </Button>
       </MenuItem>
-      <MenuItem onClick={handleLogOut}>
-        <Button color="inherit">Log out</Button>
+  
+      <MenuItem onClick={handleLogOut} sx={{ padding: "10px 20px" }}>
+        <ListItemIcon>
+          <ExitToApp fontSize="small" />
+        </ListItemIcon>
+        <Button
+          color="inherit"
+          sx={{ justifyContent: "flex-start", textTransform: "none" }}
+        >
+          Log out
+        </Button>
       </MenuItem>
     </Menu>
   );
+  
+  
+  
+
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -104,6 +181,20 @@ export default function AppAppBar() {
     localStorage.clear();
     window.location.href = "/singin";
   };
+
+  const handleSearchToggle = () => {
+    setSearchOpen((prev) => !prev);
+    if (searchOpen) {
+      setSearchTerm(''); 
+    }
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    // console.log("Searching for:", searchTerm);
+    setSearchOpen(false);
+  };
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -168,6 +259,11 @@ export default function AppAppBar() {
     </Menu>
   );
 
+
+
+ 
+
+
   return (
     <>
       <AppBar
@@ -176,7 +272,7 @@ export default function AppAppBar() {
           boxShadow: 0,
           bgcolor: "transparent",
           backgroundImage: "none",
-          mt: 10,
+          mt: 2,
         }}
       >
         <Container maxWidth="lg">
@@ -188,26 +284,29 @@ export default function AppAppBar() {
               <Link to="/">
                 <Sitemark />
               </Link>
+
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                <Button variant="text" color="info" size="small">
+                <Button variant="text" color="info" size="small" onClick={() => scrollToSection(featuresRef)}>
                   Features
                 </Button>
-                <Button variant="text" color="info" size="small">
+                <Button variant="text" color="info" size="small" onClick={() => scrollToSection(testimonialsRef)}>
                   Testimonials
                 </Button>
-                <Button variant="text" color="info" size="small">
+                <Button variant="text" color="info" size="small" onClick={() => scrollToSection(highlightsRef)}>
                   Highlights
                 </Button>
-                <Button variant="text" color="info" size="small">
+                <Button variant="text" color="info" size="small" onClick={() => scrollToSection(pricingRef)}>
                   Pricing
                 </Button>
-                <Button variant="text" color="info" size="small">
+                <Button variant="text" color="info" size="small" onClick={() => scrollToSection(faqRef)}>
                   FAQ
                 </Button>
                 <Button variant="text" color="info" size="small">
                   Blog
                 </Button>
               </Box>
+
+
             </Box>
 
             {/* Desktop Menu */}
@@ -218,83 +317,95 @@ export default function AppAppBar() {
                 alignItems: "center",
               }}
             >
-              {Ruser && Object.keys(Ruser).length > 0 ? (
-                <>
-                  <IconButton
-                    size="large"
-                    aria-label="show mails"
-                    color="inherit"
-                  >
-                    <Badge badgeContent={0} color="error">
-                      <Link
-                        to="/inbox"
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <MailIcon />
-                      </Link>
-                    </Badge>
-                  </IconButton>
+             <IconButton 
+             onClick={handleSearchToggle} 
+             color="inherit"
+             size="large" 
+             >
+                <Badge color="error">
+                  <Typography variant="body1">🔍</Typography>
+                </Badge>
+              </IconButton>
+              
 
-                  <IconButton
-                    size="large"
-                    aria-label="show notifications"
-                    color="inherit"
-                    onClick={handleNotificationsOpen}
-                  >
-                    <Badge badgeContent={0} color="error">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
+              {searchOpen && (
+                <form onSubmit={handleSearchSubmit}>
+                  <TextField
+                    size="medium"
+                    variant="outlined"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    sx={{ ml: 1, mr:10, width:'90%' }}
+                    
+                  />
+                </form>
+              )}
 
-                  <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls="primary-profile-menu"
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                    color="inherit"
-                  >
-                    <Avatar
-                    src={avatarUrl}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = "";
-                      }}
-                    >
-                      <AccountCircle />
-                    </Avatar>
-                  </IconButton>
 
-                  <Notifications
+
+
+<Box sx={{ display: { xs: "none", md: "flex" }, gap: 1, alignItems: "center" }}>
+
+{_id && Object.keys(_id).length > 0 ? (
+  <>
+    <IconButton size="large" color="inherit">
+      <Badge badgeContent={0} color="error" showZero>
+        <Link to="/admin/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <DashboardIcon />
+        </Link>
+      </Badge>
+    </IconButton>
+
+    <IconButton size="large" color="inherit">
+      <Badge badgeContent={1000} color="error" showZero>
+        <Link to="/inbox" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <MailIcon />
+        </Link>
+      </Badge>
+    </IconButton>
+    <Notifications
                     open={notificationDialogOpen}
                     close={handleNotificationsOpen}
                     requestData={requestData}
                   />
-                </>
-              ) : (
-                <>
-                  <Button
-                    component={Link}
-                    to="/singin"
-                    color="primary"
-                    variant="text"
-                    size="small"
-                  >
-                    Sign in
-                  </Button>
-                  <Button
-                    component={Link}
-                    to="/singup"
-                    color="primary"
-                    variant="contained"
-                    size="small"
-                  >
-                    Sign up
-                  </Button>
-                </>
-              )}
-            </Box>
+
+    <IconButton 
+    onClick={handleProfileMenuOpen} 
+    size="large"
+    color="inherit"
+    >
+      <Avatar
+        src={avatar.url}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = ""; 
+        }}
+      >
+        {firstName?.charAt(0).toUpperCase() || 'R'}
+      </Avatar>
+    </IconButton>
+
+
+
+   
+  </>
+) : (
+  <>
+    <Button component={Link} to="/signin" color="primary" variant="text" size="small">
+      Sign in
+    </Button>
+    <Button component={Link} to="/signup" color="primary" variant="contained" size="small">
+      Sign up
+    </Button>
+  </>
+)}
+
+</Box>
+           
+           
+           </Box>
+
 
             {/* Mobile Menu */}
             <Box sx={{ display: { sm: "flex", md: "none" } }}>
@@ -313,7 +424,7 @@ export default function AppAppBar() {
                     <IconButton onClick={toggleDrawer(false)}>
                       <CloseRoundedIcon />
                     </IconButton>
-                    f
+                    
                   </Box>
                   <MenuItem>Features</MenuItem>
                   <MenuItem>Testimonials</MenuItem>

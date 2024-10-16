@@ -1,5 +1,4 @@
-// hooks/useRedirectBasedOnRole.js
-import { useNavigate } from 'react-router-dom';
+  import { useNavigate } from 'react-router-dom';
 
 const useRedirectBasedOnRole = () => {
   const navigate = useNavigate();
@@ -7,7 +6,7 @@ const useRedirectBasedOnRole = () => {
   const redirect = (role) => {
     switch (role) {
       case 'admin':
-        navigate('/admin/edit-workers');
+        navigate('/admin/dashboard');
         break;
       case 'user':
         navigate('/profile');
@@ -15,7 +14,7 @@ const useRedirectBasedOnRole = () => {
       default:
         navigate('/pricing'); 
     }
-    window.location.reload();
+    // window.location.reload();
   };
 
   return redirect;

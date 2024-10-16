@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Divider from '@mui/material/Divider';
 import AppAppBar from './components/AppAppBar';
 import Hero from './components/Hero';
@@ -12,35 +12,71 @@ import Footer from './components/Footer';
 import { setMarginTop } from '../../actions/userAction'; 
 import { useDispatch } from 'react-redux';
 
-function MarketingPage() {
 
+function MarketingPage() {
   const dispatch = useDispatch();
+  const testimonialsRef = useRef(null);
+  const featuresRef = useRef(null);
+  const highlightsRef = useRef(null);
+  const pricingRef = useRef(null);
+  const faqRef = useRef(null);
+
   
-  // Dispatch the action when the component mounts
   useEffect(() => {
     dispatch(setMarginTop('0px'));
   }, [dispatch]);
 
+
   return (
-   <>
-        <AppAppBar  />
-        <Hero />
-        <div>
-          <LogoCollection />
+    <>
+      <AppAppBar 
+        testimonialsRef={testimonialsRef} 
+        featuresRef={featuresRef} 
+        highlightsRef={highlightsRef} 
+        pricingRef={pricingRef} 
+        faqRef={faqRef} 
+        
+      />
+      <Hero />
+      <div>
+        <LogoCollection />
+        
+        {/* Features Section */}
+        <div ref={featuresRef}>
           <Features />
-          <Divider />
-          <Testimonials />
-          <Divider />
-          <Highlights />
-          <Divider />
-          <Pricing />
-          <Divider />
-          <FAQ />
-          <Divider />
-          <Footer />
         </div>
+        <Divider />
+        
+        {/* Testimonials Section */}
+        <div ref={testimonialsRef}>
+          <Testimonials />
+        </div>
+        <Divider />
+        
+        {/* Highlights Section */}
+        <div ref={highlightsRef}>
+          <Highlights />
+        </div>
+        <Divider />
+        
+        {/* Pricing Section */}
+        <div ref={pricingRef}>
+          <Pricing />
+        </div>
+        <Divider />
+        
+        {/* FAQ Section */}
+        <div ref={faqRef}>
+          <FAQ />
+        </div>
+        <Divider />
+        
+        {/* Footer Section */}
+        <Footer />
+      </div>
     </>
   );
-}
+};
+
 
 export default MarketingPage;

@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import CustomSnackbar from '../../Layouts/Snackbar';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import useRedirectBasedOnRole from '../../../utils/redirect';
+import useRedirectBasedOnRole from '../../../hooks/redirect';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',

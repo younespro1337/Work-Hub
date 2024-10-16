@@ -2,13 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React from 'react';
 import Search from './components/Layouts/Search';
 import Jobs from './components/Jobs/Jobs';
-import Dashboard from './components/Admin/Charts/MainData.jsx';
+// import Dashboard from './components/Admin/Charts/MainData.jsx';
 import EditWorkers from './components/Admin/Workers/Main';
 import EditMaterials from './components/Admin/Materials/Main';
 import EditJobs from './components/Admin/Jobs/Main';
 import Profile from './components/Home/profile/Main';
-import LearnBoxes from './components/Home/article/learnMoreBox';
-import MarketingPlan from './components/Home/article/Marketingblogs';
 import Settings from './components/Home/Settings/Setting';
 import ChatLayouts from './components/Home/ChatLayout/ChatLayout.jsx';
 import Materials from './components/Home/Materials/Materials.jsx';
@@ -16,7 +14,6 @@ import Aboutus from './components/Home/AboutUs/about-us';
 import ProtectedRoute from './Routes/ProtectedRoute.js';
 import Resolver from './components/NewHome/Resolver.js';
 import useGaTracker from './utils/GA.js';
-import AppAppBar from './components/NewHome/components/AppAppBar.js';
 import TemplateFrame from './components/NewHome/TemplateFrame.js';
 import getMPTheme from './components/NewHome/theme/getMPTheme';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -26,6 +23,8 @@ import SignUp from './components/Login/SingUp/SingUp.js';
 import { useSelector } from 'react-redux';
 import Pricing from './components/NewHome/components/Pricing.js';
 import ResetPassword from './components/Auth/ResetPassword.jsx';
+import Dashboard from './components/Admin/dashboard/Dashboard.js';
+import AppAppBar from './components/NewHome/components/AppAppBar.js';
 
 const App = () => {
   const [mode, setMode] = React.useState('light');
@@ -78,19 +77,21 @@ const App = () => {
                   {/* User section */}
                   <Route path="/about-us" element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
                   <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
+                  <Route path="/material/:id" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
                   <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
                   <Route path="/Jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
+                  <Route path="/Jobs/:id" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                  <Route path="/inbox" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
+                  <Route path="/inbox/c/:id" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
+                  <Route path="/inbox/" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
                   <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/profile/:id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                   {/* Admin Dashboard Section */}
                   <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                   <Route path="/admin/edit-workers" element={<ProtectedRoute isAdmin={true}><EditWorkers /></ProtectedRoute>} />
                   <Route path="/admin/edit-materials" element={<ProtectedRoute isAdmin={true}><EditMaterials /></ProtectedRoute>} />
                   <Route path="/admin/edit-jobs" element={<ProtectedRoute isAdmin={true}><EditJobs /></ProtectedRoute>} />
                   {/* Additional Routes */}
-                  <Route path="/learn-more" element={<LearnBoxes />} />
-                  <Route path="/Marketing-plan" element={<MarketingPlan />} />
                 </Routes>
               </div>
             </UseGaTrackerWrapper>

@@ -25,6 +25,7 @@ import { MediaMessage } from './MediaMessage';
 import { FileMessage } from './FileMessage';
 import { fakeCompaniesData } from './FakeData';
 import openSocket from 'socket.io-client';
+import AppAppBar from '../../NewHome/components/AppAppBar';
 const socket = openSocket('http://localhost:5000');
 
 const calculateBoxHeight = (itemCount) => {
@@ -278,7 +279,7 @@ React.useEffect(() => {
 
 useSocket('message', (data) => {
 
-console.log('Playing message sound...');
+// console.log('Playing message sound...');
   const content = data?.message?.content;
 const sender_id = data?.message?.sender;
   const timestamp = data?.message?.timestamp;
@@ -303,7 +304,7 @@ const sender_id = data?.message?.sender;
       timestamp: timestamp, 
       _id: Math.floor(Math.random() * 1000000).toString(),
     };
-    console.log('New message:', newMessage);
+    // console.log('New message:', newMessage);
     return [...prevMessages, newMessage];
   });
 
@@ -338,7 +339,7 @@ React.useEffect(() => {
         break;
     }
   });
-  const newMarginTop = totalHeight / 16; 
+  const newMarginTop = totalHeight / 16;
   console.log(`Total Height: ${totalHeight}, New Margin Top: ${newMarginTop}`);
   setMarginTop(newMarginTop);
 }, [sortedChatMessages]);
@@ -346,7 +347,7 @@ React.useEffect(() => {
 
 
     return (
-      <>
+      <div style={{marginTop:'10rem'}}>
 
         <Grid container spacing={2}>
 
@@ -787,7 +788,7 @@ scrollbarWidth: 'none',  // Hide scrollbar for Firefox
 
 
 </Grid>
-        </>
+        </div>
       );
 };
 

@@ -28,8 +28,9 @@ import Loading from '../../Layouts/loading'
 import CustomSnackbar from '../../Layouts/Snackbar';
 import openSocket from 'socket.io-client';
 import { useSocket } from '../../../actions/socketService';
+import { Suspense } from 'react';
+import AppAppBar from '../../NewHome/components/AppAppBar';
 const socket = openSocket('http://localhost:5000');
-
 
 
 export default function RecipeReviewMaterials() {
@@ -105,15 +106,7 @@ export default function RecipeReviewMaterials() {
   };
   
 
-
   
-
-
-
-  
-
-
-
   
 
 
@@ -130,9 +123,8 @@ const handleGetMaterial = async (material) => {
 
 
   return (
-    loading ?  (
-<Loading />
-    ): (
+    <>
+    <Suspense fallback={<Loading />}>
       <Grid container
       spacing={2} 
       sx={{ 
@@ -263,8 +255,9 @@ const handleGetMaterial = async (material) => {
 />
 
      </Grid>
-    )
-    
+     </Suspense>
+     </>
+     
 
   );
 }

@@ -5,6 +5,7 @@ import SideBar from '../SideBar/SideBar';
 import { formatDate } from '../../../utils/DateFormat';
 import MaterialsGridComponent from './DataGridComponent';
 import MaterialsFormDialog from './MaterialsDialogForm';
+import AppAppBar from '../../NewHome/components/AppAppBar';
 
 const Main = () => {
     const [materials, setMaterials] = useState([]);  
@@ -57,6 +58,8 @@ const Main = () => {
     };
 
     return (
+        <>
+        {/* <AppAppBar />  */}
         <div className='wrapper'>
             <SideBar
                 openAddMaterialDialog={openAddMaterialDialog}
@@ -72,6 +75,7 @@ const Main = () => {
                 updateMaterials={updateMaterials}
             />
         </div>
+        </>
     );
 };
 

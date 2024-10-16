@@ -284,9 +284,12 @@ const handleProfileMenuOpen = (event) => {
                 color="inherit"
                 onClick={handleNotificationsOpen} 
               >
-                <Badge  badgeContent={requestData?.requests?.length} color="error">
-                  <NotificationsIcon />
-                </Badge>
+<Badge badgeContent={0} color="error" showZero>
+  <MailIcon />
+</Badge>
+
+
+
               </IconButton>
 
 

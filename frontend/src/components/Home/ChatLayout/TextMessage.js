@@ -4,7 +4,7 @@ Paper , Avatar, Typography
 
 export const TextMessage = ({ src ,content, sender,memberDetails, iAm }) => {
     const isCurrentUser = sender === iAm?._id;
-    console.log('tetx Message: iam',iAm)
+    // console.log('text Message: iam',iAm)
     return (
       <>
         <Paper

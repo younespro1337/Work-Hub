@@ -8,6 +8,7 @@ import MuiAlert from '@mui/material/Alert';
 import ProfileHeader from './ProfileHeader';
 import TasksContainer from './TasksContainer';
 import { setMarginTop } from '../../../actions/userAction';
+import AppAppBar from '../../NewHome/components/AppAppBar';
 
 
 
