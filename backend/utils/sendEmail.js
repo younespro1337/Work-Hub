@@ -17,10 +17,10 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (data) => {
     try {
         const mailOptions = {
-            from: process.env.SMTP_MAIL, 
+            from: data.sender ||  process.env.SMTP_MAIL, 
             to: data.email,
             subject: data.subject,
-            html: data.html
+            html: data.html 
         };
 
     const info = await transporter.sendMail(mailOptions);
