@@ -65,7 +65,7 @@ const App = () => {
           <ThemeProvider theme={showCustomTheme ? MPTheme : defaultTheme}>
             <CssBaseline enableColorScheme />
             <UseGaTrackerWrapper>
-              <AppAppBar />
+              {/* <AppAppBar /> */}
               <div style={marginTop}>
                 <Routes>
                 <Route path="/" element={<Resolver />} />

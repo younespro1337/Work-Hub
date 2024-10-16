@@ -14,7 +14,7 @@ function MenuButton({ showBadge = false, ...props }) {
       <IconButton size="small" {...props} />
     </Badge>
   );
-}
+};
 
 MenuButton.propTypes = {
   showBadge: PropTypes.bool,

@@ -93,14 +93,14 @@ function Notifications({ open, close, requestData }) {
 
 
 
-const notificationCount = 90
+const notificationCount = 90;
   return (
     <>
       <IconButton 
       size='large'
       color="inherit"
       onClick={handlePopoverOpen}>
-        <Badge badgeContent={notificationCount || 1000} color="error" showZero>
+        <Badge badgeContent={notificationCount} color="error" showZero >
         <NotificationsIcon />
       </Badge>
       </IconButton>

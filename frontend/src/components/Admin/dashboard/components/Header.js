@@ -5,7 +5,7 @@ import CustomDatePicker from './CustomDatePicker';
 import NavbarBreadcrumbs from './NavbarBreadcrumbs';
 import MenuButton from './MenuButton';
 // import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
-
+import Notifications from '../../../NewHome/components/Notifications';
 import Search from './Search';
 
 export default function Header() {
@@ -27,8 +27,9 @@ export default function Header() {
       <Stack direction="row" sx={{ gap: 1 }}>
         <Search />
         <CustomDatePicker />
-        <MenuButton showBadge aria-label="Open notifications">
-          <NotificationsRoundedIcon />
+        <MenuButton 
+        aria-label="Open notifications">
+          <Notifications />
         </MenuButton>
         {/* <ColorModeIconDropdown /> */}
       </Stack>
