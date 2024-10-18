@@ -25,6 +25,7 @@ import Pricing from './components/NewHome/components/Pricing.js';
 import ResetPassword from './components/Auth/ResetPassword.jsx';
 import Dashboard from './components/Admin/dashboard/Dashboard.js';
 import AppAppBar from './components/NewHome/components/AppAppBar.js';
+import TermsConditions from './components/NewHome/components/TermsConditions.js';
 
 const App = () => {
   const [mode, setMode] = React.useState('light');
@@ -75,6 +76,8 @@ const App = () => {
                 <Route path="/resetPassword/:token" element={<ResetPassword />} />
 
                   {/* User section */}
+                  <Route path='/terms-conditions' element={<TermsConditions/>}/>
+
                   <Route path="/about-us" element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
                   <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
                   <Route path="/material/:id" element={<ProtectedRoute><Materials /></ProtectedRoute>} />

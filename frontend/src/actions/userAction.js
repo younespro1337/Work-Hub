@@ -401,6 +401,20 @@ export const trackEmail = async () => {
 
 
 
+//Define a function to call the subscription route
+export const sendSubscriptionEmail = async (email)=>{
+  try {
+    const response = await axios.post("/api/v1/subscription", {email})
+    return response.data
+  } catch (error) {
+    // Handle any errors that occur during the request
+    console.log("Error", error.message);
+    throw error
+  }
+}
+
+
+
 
 
 
