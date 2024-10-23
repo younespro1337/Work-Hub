@@ -9,12 +9,12 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
-app.set('trust proxy', 2);
+app.set('trust proxy', 2); // Add Proxy Trust and Rate Limiting to Server
 
 // Rate Limiting
 const defaultLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 1000, // Limit each IP to 1000 requests per windowMs
+  max: 1000, // Limit each IP to 1000 requests per windowMs 
   message: 'Too many login attempts, please try again later.',
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers

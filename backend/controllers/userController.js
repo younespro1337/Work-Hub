@@ -358,12 +358,6 @@ exports.resetPassword = async (req, res) => {
 };
 
 
-
-
-
-
-
-
 // Your route handler
 exports.Track = async (req, res) => {
   // console.log('req Query: ', req.query);
@@ -402,7 +396,6 @@ exports.Track = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 
 
 
