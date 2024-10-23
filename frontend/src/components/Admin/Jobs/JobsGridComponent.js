@@ -18,7 +18,7 @@ const JobsDataGrid = ({ jobs, loading, updateJobsData }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
-
+ 
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
@@ -55,6 +55,7 @@ const JobsDataGrid = ({ jobs, loading, updateJobsData }) => {
     }
   };
   
+  console.log('DataGrid Ref:', dataGridRef.current);
 
   const handleRowEditCommit = React.useCallback(
     async (params) => {

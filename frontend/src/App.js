@@ -1,8 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import React from 'react';
 import Search from './components/Layouts/Search';
 import Jobs from './components/Jobs/Jobs';
-// import Dashboard from './components/Admin/Charts/MainData.jsx';
 import EditWorkers from './components/Admin/Workers/Main';
 import EditMaterials from './components/Admin/Materials/Main';
 import EditJobs from './components/Admin/Jobs/Main';
@@ -25,6 +24,7 @@ import Pricing from './components/NewHome/components/Pricing.js';
 import ResetPassword from './components/Auth/ResetPassword.jsx';
 import Dashboard from './components/Admin/dashboard/Dashboard.js';
 import AppAppBar from './components/NewHome/components/AppAppBar.js';
+import CustomTraining from './components/NewHome/components/TermsCondtions.js';
 
 const App = () => {
   const [mode, setMode] = React.useState('light');
@@ -32,6 +32,7 @@ const App = () => {
   const MPTheme = createTheme(getMPTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
   const marginTop = useSelector(state => state.layouts);
+  const location = useLocation();
 
   React.useEffect(() => {
     const savedMode = localStorage.getItem('themeMode');
@@ -43,67 +44,79 @@ const App = () => {
     }
   }, []);
 
+
   const toggleColorMode = () => {
     const newMode = mode === 'dark' ? 'light' : 'dark';
     setMode(newMode);
     localStorage.setItem('themeMode', newMode);
   };
 
+
   const toggleCustomTheme = () => {
     setShowCustomTheme(prev => !prev);
   };
 
+  const showAppBar = location.pathname.includes('/admin') 
+ console.log(showAppBar);
 
   return (
-    <Router>
-        <TemplateFrame
-          toggleCustomTheme={toggleCustomTheme}
-          showCustomTheme={showCustomTheme}
-          mode={mode}
-          toggleColorMode={toggleColorMode}
-        >
-          <ThemeProvider theme={showCustomTheme ? MPTheme : defaultTheme}>
-            <CssBaseline enableColorScheme />
-            <UseGaTrackerWrapper>
-              {/* <AppAppBar /> */}
-              <div style={marginTop}>
-                <Routes>
-                <Route path="/" element={<Resolver />} />
-                <Route path="/singin" element={<SignInSide />} />
-                <Route path="/singup" element={<SignUp />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/resetPassword/:token" element={<ResetPassword />} />
+    <TemplateFrame
+      toggleCustomTheme={toggleCustomTheme}
+      showCustomTheme={showCustomTheme}
+      mode={mode}
+      toggleColorMode={toggleColorMode}
+    >
+      <ThemeProvider theme={showCustomTheme ? MPTheme : defaultTheme}>
+        <CssBaseline enableColorScheme />
+        <UseGaTrackerWrapper>
+          {!showAppBar && <AppAppBar />}
+          <div style={marginTop}>
+            <Routes>
+            <Route path="/terms-conditions" element={<CustomTraining />} />
+              <Route path="/" element={<Resolver />} />
+              <Route path="/signin" element={<SignInSide />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/resetPassword/:token" element={<ResetPassword />} />
+              <Route path="/about-us" element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
+              <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
+              <Route path="/material/:id" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
+              <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
+              <Route path="/Jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
+              <Route path="/Jobs/:id" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/inbox/c/:id" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
+              <Route path="/inbox/" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/profile/:id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-                  {/* User section */}
-                  <Route path="/about-us" element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
-                  <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
-                  <Route path="/material/:id" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
-                  <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
-                  <Route path="/Jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
-                  <Route path="/Jobs/:id" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
-                  <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                  <Route path="/inbox/c/:id" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
-                  <Route path="/inbox/" element={<ProtectedRoute><ChatLayouts /></ProtectedRoute>} />
-                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                  <Route path="/profile/:id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                  {/* Admin Dashboard Section */}
-                  <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                  <Route path="/admin/edit-workers" element={<ProtectedRoute isAdmin={true}><EditWorkers /></ProtectedRoute>} />
-                  <Route path="/admin/edit-materials" element={<ProtectedRoute isAdmin={true}><EditMaterials /></ProtectedRoute>} />
-                  <Route path="/admin/edit-jobs" element={<ProtectedRoute isAdmin={true}><EditJobs /></ProtectedRoute>} />
-                  {/* Additional Routes */}
-                </Routes>
-              </div>
-            </UseGaTrackerWrapper>
-          </ThemeProvider>
-        </TemplateFrame>
-    </Router>
+              {/* admin section */}
+              <Route path="/admin/dashboard" element={<ProtectedRoute isAdmin={true}><Dashboard /></ProtectedRoute>} />
+              <Route path="/admin/edit-workers" element={<ProtectedRoute isAdmin={true}><EditWorkers /></ProtectedRoute>} />
+              <Route path="/admin/edit-materials" element={<ProtectedRoute isAdmin={true}><EditMaterials /></ProtectedRoute>} />
+              <Route path="/admin/edit-jobs" element={<ProtectedRoute isAdmin={true}><EditJobs /></ProtectedRoute>} />
+              {/* admin section */}
+
+            </Routes>
+          </div>
+        </UseGaTrackerWrapper>
+      </ThemeProvider>
+    </TemplateFrame>
   );
 };
 
+// UseGaTrackerWrapper is a custom hook that wraps your app in Google Analytics tracking.
 const UseGaTrackerWrapper = ({ children }) => {
   useGaTracker();
   return children;
 };
 
-export default App;
+// WrappedApp is the root component that wraps the entire app in a Router.
+const WrappedApp = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+
+export default WrappedApp;

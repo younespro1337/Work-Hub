@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 const ProtectedRoute = ({ children, isAdmin }) => {
 
     const { loading, isAuthenticated, user } = useSelector(state => state.user);
-    // console.log(user, loading, isAuthenticated)
+    // console.log(loading, isAuthenticated, user);
 
     return (
         <>
@@ -16,3 +16,4 @@ const ProtectedRoute = ({ children, isAdmin }) => {
 };
 
 export default ProtectedRoute;
+

@@ -49,8 +49,8 @@ const WorkersSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin','unknown'],
-    default: 'unknown',
+    enum: ['user', 'admin','guest'],
+    default: 'guest',
   },
   legalInfo: {
     type: String,
@@ -169,7 +169,7 @@ WorkersSchema.methods.getResetPasswordToken = async function () {
     .update(resetToken)
     .digest('hex');
 
-  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // password will expire after 15 min
 
   return resetToken;
 };

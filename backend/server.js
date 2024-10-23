@@ -6,18 +6,14 @@ const cors = require('cors');
 const connectDatabase = require('./config/database');
 const cloudinary = require('cloudinary');
 const { Server } = require('socket.io');
-const { testEmail } = require("./utils/sendEmail")
-// Create an HTTP server
 const httpServer = http.createServer(app);
 
-// Use CORS middleware
 app.use(cors());
 
-// Create a Socket.IO server attached to the HTTP server
 const io = new Server(httpServer, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
+    origin: process.env.ORIGING || 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   },
 });
 
@@ -26,14 +22,10 @@ const PORT = process.env.PORT || 5000;
 
 
 
-// Handle Socket.IO connection event
 io.on('connection', (socket) => {
-// console.log(`A user connected id = ${socket.id}`);
 
-// dle 'message' event
 socket.on('message', (data) => {
 // console.log('Received message:', data);
-// Broadcast the message to all connected clients
 io.emit('message', data);
 
 })
@@ -46,8 +38,6 @@ socket.on('materialRequest', async (userId) => {
 // dle 'disconnect' event
 socket.on('disconnect', () => {
 // console.log('User disconnected');
-
-
 });
 })
 
@@ -56,12 +46,6 @@ socket.on('disconnect', () => {
 module.exports = io ;
 
 
-
-
-
-
-
-// Handle uncaughtException Error
 process.on('uncaughtException', (err) => {
   // console.log(`Error: ${err.message}`);
   process.exit(1);

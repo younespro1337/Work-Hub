@@ -61,25 +61,16 @@ export const googleLogin = (access_token) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_USER_REQUEST });
 
-
-    // console.log('access_token: ',access_token)
-
     const googleUserInfoResponse = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
-    // console.log('google response:',googleUserInfoResponse)
-    // Retrieve the relevant user info
     const userData = googleUserInfoResponse.data;
 
-    // Now, send this data to your backend for further processing
     const { data } = await axios.post('/api/v1/oauth/google', {
       userData
     });
 
     // console.log(data)
-    // Extract the token and user from the response
     const token = data.token;
     const user = data.user;
-     
-
     // Store token and user in localStorage
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -126,7 +117,7 @@ export const registerUser = (userData) => async (dispatch) => {
       payload: user,
     });
 
-    return { success: true, data };  // Return a success object
+    return { success: true, data }; 
 
   } catch (error) {
     // Handle error and return it
@@ -163,6 +154,14 @@ export const forgotPassword = async (email) => {
 
 
 
+export const userSubscription = async (email) => {
+  try {
+    const { data} = await axios.post('/api/v1/subscription', {email});
+    return data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+}
 
 
 
@@ -285,6 +284,7 @@ export const handleSaveChanges = async (data) => {
     console.error('Error saving data:', error);
   }
 };
+
 
 
 export const handleDeleteWorker = async (id) => {

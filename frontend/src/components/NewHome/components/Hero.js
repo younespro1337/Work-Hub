@@ -7,9 +7,11 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
+import Alert from '@mui/material/Alert';
 import { visuallyHidden } from '@mui/utils';
 import { styled } from '@mui/material/styles';
+import { userSubscription } from '../../../actions/userAction';
+import CustomSnackbar from '../../Layouts/Snackbar';
 
 const StyledBox = styled('div')(({ theme }) => ({
   alignSelf: 'center',
@@ -37,6 +39,36 @@ const StyledBox = styled('div')(({ theme }) => ({
 }));
 
 export default function Hero() {
+const [email, setEmail] = React.useState('');
+const [isSnackbarOpen, setSnackbarOpen ] = React.useState(false);
+const [snackbarMessage, setSnackbarMessage] = React.useState('');
+const [severity, setSeverity ] = React.useState('');
+
+
+const handleChange = async (event) => { 
+  // Send the email to the server
+  const emailObtained = event.target.value;
+  // console.log(emailObtained);
+  setEmail(emailObtained);
+}
+
+
+const handleSubscribeClick = async () => {
+  try {
+    const  data  =  await userSubscription(email);
+    // console.log(data);
+      const  { message , status }  = data;
+      setSnackbarOpen(true);
+      setSnackbarMessage(message)
+      setSeverity(status ==='success'? 'success' : 'error');
+  } catch (err) { 
+    console.error('Error subscribing user:', err);
+    setSnackbarOpen(true);
+    setSnackbarMessage('Subscription failed. Please try again.');
+    setSeverity('error');  
+  }
+}
+
   return (
     <Box
       id="hero"
@@ -106,17 +138,23 @@ export default function Hero() {
             useFlexGap
             sx={{ pt: 2, width: { xs: '100%', sm: '350px' } }}
           >
+            
+             
+              
             <InputLabel htmlFor="email-hero" sx={visuallyHidden}>
               Email
             </InputLabel>
             <TextField
               id="email-hero"
               hiddenLabel
+              name="email"
               size="small"
+              value={email}
               variant="outlined"
               aria-label="Enter your email address"
               placeholder="Your email address"
               fullWidth
+              onChange={handleChange}
               slotProps={{
                 htmlInput: {
                   autoComplete: 'off',
@@ -124,14 +162,18 @@ export default function Hero() {
                 },
               }}
             />
+
             <Button
+            type="submit"
               variant="contained"
               color="primary"
               size="small"
+              onClick={handleSubscribeClick}
               sx={{ minWidth: 'fit-content' }}
             >
               Start now
             </Button>
+
           </Stack>
           <Typography
             variant="caption"
@@ -139,14 +181,21 @@ export default function Hero() {
             sx={{ textAlign: 'center' }}
           >
             By clicking &quot;Start now&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
+            <Link to="/terms-conditions" color="primary">
               Terms & Conditions
             </Link>
             .
           </Typography>
         </Stack>
-        <StyledBox id="image" />
+        <StyledBox id="image" />      
       </Container>
+      <CustomSnackbar
+        open={isSnackbarOpen}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+        severity={severity}
+        autoHideDuration={3000}
+      />
     </Box>
   );
 }

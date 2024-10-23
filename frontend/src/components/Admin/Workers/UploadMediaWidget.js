@@ -13,6 +13,7 @@ const useOpenUploadWidget = ({ setTaskImages, setTaskVideos, setTaskDocuments })
     if (isUploadWidgetOpen) {
       if (window.cloudinary && window.cloudinary.createUploadWidget) {
         const widget = window.cloudinary.createUploadWidget(
+          
           {
             cloudName: 'dktkavyr3',
             uploadPreset: 'qw4k1xjq',

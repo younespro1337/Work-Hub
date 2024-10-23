@@ -88,7 +88,7 @@ export default function AppAppBar({ testimonialsRef, featuresRef, highlightsRef,
 
   const scrollToSection = (ref) => {
     if (ref && ref.current) {
-      console.log('Scrolling to section:', ref.current); 
+      // console.log('Scrolling to section:', ref.current); 
       ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
       console.error('Ref not found:', ref); 
@@ -233,11 +233,11 @@ export default function AppAppBar({ testimonialsRef, featuresRef, highlightsRef,
       <MenuItem>
         <IconButton
           size="large"
-          aria-label={`show ${requestData.length} new notifications`}
+          aria-label={`show ${requestData?.length || 0} new notifications`}
           color="inherit"
           onClick={handleNotificationsOpen}
         >
-          <Badge badgeContent={requestData.length} color="error">
+          <Badge badgeContent={requestData?.length || 0} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>

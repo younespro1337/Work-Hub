@@ -1,6 +1,7 @@
   import { useNavigate } from 'react-router-dom';
 
 const useRedirectBasedOnRole = () => {
+  
   const navigate = useNavigate();
 
   const redirect = (role) => {
@@ -16,6 +17,7 @@ const useRedirectBasedOnRole = () => {
     }
     // window.location.reload();
   };
+  
 
   return redirect;
 };

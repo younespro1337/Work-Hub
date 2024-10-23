@@ -4,6 +4,7 @@ const Jobs = require('../models/jobsModel');
 const EmailLog = require('../models/emailModel')
 const Tasks = require('../models/taskModel')
 const MarketerModel = require('../models/MarketerModel'); 
+const Subscribers = require('../models/suscribes')
 const asyncErrorHandler = require('../middlewares/asyncErrorHandler');
 const cloudinary = require('cloudinary').v2; 
 const sendToken = require('../utils/sendToken');
@@ -187,7 +188,7 @@ if (existingUser) {
               lastName,
               email,
               password,
-              role: 'unknown',
+              role: 'guest',
               receiveUpdates: true,
           });
           
@@ -203,6 +204,26 @@ if (existingUser) {
   }
 });
 
+
+
+exports.createSubscriber = asyncErrorHandler(async (req, res, next) => {
+     console.log(req.body);
+  const { email } = req.body;
+  try {
+    // Check if email is already in use
+    const existingUser = await Subscribers.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'This email is already subscribed.' });
+    }
+    
+    const newSubscriber = await Subscribers.create({ email });
+
+    res.status(201).json({ message: 'Email subscribed successfully.' , subscriber: newSubscriber , status: 'success' })
+  } catch(err) {
+    console.error(err);
+    throw new ErrorHandler('An error occurred while checking for existing subscribers', 500);
+  }
+})
 
 
 
@@ -650,16 +671,15 @@ exports.confirmTaken = asyncErrorHandler(async (req, res) => {
 
   // Update the user in the material's users array
   for (const user of material.users) {
-    if (user.userIdLS.toString() === userOfTakenId.toString()) { // Compare the user's userIdLS with the userOfTakenId
+    if (user.userIdLS.toString() === userOfTakenId.toString()) { 
       // console.log('User IDLS matched:', user._id);
       user.userIdLS = requesterId;
-      // Find the worker by the requesterId
       try {
         const worker = await Workers.findById(requesterId);
         if (worker) {
-          user.email = worker.email;       // Update email from worker
-          user.name = worker.name;         // Update name from worker
-          user.takenAt = Date.now();       // Update takenAt with the current date
+          user.email = worker.email;       
+          user.name = worker.name;         
+          user.takenAt = Date.now();       
         } else {
           // console.log(`Worker with ID ${requesterId} not found.`);
           // Handle the case when worker is not found, e.g., show an error message or take appropriate action.
@@ -788,7 +808,7 @@ exports.applyJob = asyncErrorHandler(async (req, res, next) => {
 
     // Convert the file data to base64 encoding
     const fileData = file.data.toString('base64');
-
+    
     // Upload the base64-encoded file to Cloudinary
     const result = await cloudinary.uploader.upload(`data:${file.mimetype};base64,${fileData}`, {
       folder: 'applicants',
@@ -898,12 +918,6 @@ exports.updateProfileImg = asyncErrorHandler(async (req, res) => {
 
 
 
-
-
-
-
-
-
 exports.createTasks = asyncErrorHandler(async (req, res) => {
   // console.log('create Tasks:', req.body);
   const { 
@@ -995,15 +1009,6 @@ exports.createTasks = asyncErrorHandler(async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
 exports.TasksAvailable = asyncErrorHandler(async (req, res) => {
   // console.log(req.body);
   const { id } = req.body;
@@ -1034,16 +1039,6 @@ exports.TasksAvailable = asyncErrorHandler(async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
 exports.fetchTasks = asyncErrorHandler(async (req, res) => {
 
   try {
@@ -1054,12 +1049,6 @@ exports.fetchTasks = asyncErrorHandler(async (req, res) => {
     res.status(500).json({ success: false, error: 'Error fetching tasks' });
   }
 });
-
-
-
-
-
-
 
 
 

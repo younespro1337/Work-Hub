@@ -1,4 +1,3 @@
-// components/Auth/ResetPassword.jsx
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TextField, Button, Typography, Card, FormControl } from '@mui/material';
@@ -23,8 +22,6 @@ const ResetPassword = () => {
       const response = await axios.post(`/api/v1/resetPassword/${token}`, {
         password: newPassword,
       });
-
-      
 
       if (response.status !== 200) {
         throw new Error('Failed to reset password');

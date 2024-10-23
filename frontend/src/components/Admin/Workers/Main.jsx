@@ -10,6 +10,7 @@ import {
   Alert,
   Snackbar, 
  } from '@mui/material';
+import SideMenu from '../dashboard/components/SideMenu';
 const Main = () => {
   const [workers, setWorkers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -96,7 +97,9 @@ return (
   <div className='wrapper'>
 
   {/* <SideBar/> */}
-  <SideBar openAddWorkerDialog={OpenWorkerDialog} />
+  {/* <SideBar openAddWorkerDialog={OpenWorkerDialog} /> */}
+  <SideMenu />
+
 
 
   <DataGridComponent

@@ -29,8 +29,6 @@ import {
     UPDATE_USER_RESET,
     DELETE_USER_RESET,
     SET_SIDEBARLABEL_VALUE,
-    SET_SELECTED_MEMBER_DETAILS,
-    SET_TASKS_DETAILS,
     SET_MARGIN_TOP
 
   } from '../constants/userConstant';

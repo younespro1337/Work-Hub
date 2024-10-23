@@ -28,6 +28,7 @@ const {
   registerWorker,
   googleLogin,
   resetPassword,
+  createSubscriber,
 
 } = require('../controllers/userController');
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
@@ -64,4 +65,5 @@ router.post('/editJobs', editJobs);
 router.post('/forgotPassword', forgotPassword);
 router.post('/send-messages', sendMessages);
 router.get('/getAllChats', getAllChats);
+router.post('/subscription', createSubscriber);
 module.exports = router;
